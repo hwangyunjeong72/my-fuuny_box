@@ -1,0 +1,3305 @@
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>짤·카드 스튜디오</title>
+
+<style>
+/* =====================================
+   기본
+===================================== */
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+}
+/* =====================================
+   상단
+===================================== */
+header {
+    background: white;
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+header h1 {
+    margin: 0;
+}
+header p {
+    color: #777;
+}
+/* =====================================
+   전체
+===================================== */
+.container {
+    width: 90%;
+    max-width: 1400px;
+    margin: 40px auto;
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+/* =====================================
+   설정 패널
+===================================== */
+.control-panel {
+    width: 300px;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow:
+        0 3px 10px
+        rgba(0,0,0,0.08);
+}
+/* =====================================
+   설정
+===================================== */
+.setting {
+    margin-top: 20px;
+}
+.setting label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: bold;
+}
+.setting input[type="text"],
+.setting input[type="number"] {
+    width: 100%;
+    padding: 9px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+.setting input[type="color"] {
+    width: 100%;
+    height: 40px;
+}
+.setting input[type="range"] {
+    width: 100%;
+}
+/* =====================================
+   이미지 업로드
+===================================== */
+.upload-button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background: #333;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.upload-button:hover {
+    background: #555;
+}
+#imageInput {
+    display: none;
+}
+.help-text {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #777;
+}
+/* =====================================
+   오류
+===================================== */
+#errorMessage {
+    display: none;
+    margin-top: 10px;
+    color: red;
+}
+/* =====================================
+   버튼
+===================================== */
+.icon-toggle,
+.save-button {
+    width: 100%;
+    padding: 11px;
+    border: none;
+    border-radius: 7px;
+    background: #333;
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+}
+.icon-toggle:hover,
+.save-button:hover {
+    background: #555;
+}
+/* =====================================
+   이모지 선택 패널
+===================================== */
+.icon-panel {
+    display: none;
+    margin-top: 10px;
+    padding: 10px;
+    background: #f5f5f5;
+    border-radius: 8px;
+}
+.icon-list {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+.icon-button {
+    width: 48px;
+    height: 48px;
+    padding: 3px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.icon-button:hover {
+    border-color: #333;
+}
+.icon-button img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+}
+/* =====================================
+   추가된 모든 이모지
+===================================== */
+.added-icon,
+.text-emoji {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    cursor: move;
+    user-select: none;
+    touch-action: none;
+    z-index: 20;
+    transform-origin: center center;
+}
+/* =====================================
+   선택된 이모지
+===================================== */
+.added-icon.selected,
+.text-emoji.selected {
+    outline:
+        2px dashed #333;
+    outline-offset: 3px;
+}
+/* =====================================
+   이모지 조절창
+===================================== */
+#iconControlBox {
+    display: none;
+    margin-top: 15px;
+    padding: 15px;
+    background: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+.icon-value {
+    font-weight: bold;
+}
+.delete-icon-button {
+    width: 100%;
+    margin-top: 12px;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background: #d33;
+    color: white;
+    cursor: pointer;
+}
+.delete-icon-button:hover {
+    background: #b22;
+}
+/* =====================================
+   미리보기
+===================================== */
+.preview-area {
+    flex: 1 1 auto;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow:
+        0 3px 10px
+        rgba(0,0,0,0.08);
+    text-align: center;
+    position: sticky;
+    top: 20px;
+    align-self: flex-start;
+    max-height:
+        calc(100vh - 40px);
+    overflow-y: auto;
+}
+/* =====================================
+   편집 영역
+===================================== */
+#editor {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    margin-top: 20px;
+    line-height: 0;
+}
+/* =====================================
+   업로드 이미지
+===================================== */
+#imagePreview {
+    max-width: 100%;
+    max-height: 600px;
+    display: none;
+    margin: 0 auto;
+    border-radius: 8px;
+}
+/* =====================================
+   이미지 없음
+===================================== */
+#emptyMessage {
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    margin-top: 20px;
+    line-height: 1.5;
+}
+/* =====================================
+   일반 텍스트
+===================================== */
+#textPreview {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    white-space: nowrap;
+    cursor: move;
+    user-select: none;
+    z-index: 10;
+    line-height: normal;
+    transform:
+        translate(-50%, -50%)
+        rotate(0deg);
+}
+/* =====================================
+   템플릿 패널
+===================================== */
+.template-panel {
+    width: 260px;
+    flex: 0 0 260px;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow:
+        0 3px 10px
+        rgba(0,0,0,0.08);
+    position: sticky;
+    top: 20px;
+}
+.template-panel h2 {
+    margin-top: 0;
+}
+#templateName {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+#saveTemplateButton {
+    width: 100%;
+    padding: 11px;
+    border: none;
+    border-radius: 7px;
+    background: #333;
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+}
+#saveTemplateButton:hover {
+    background: #555;
+}
+#templateList {
+    margin-top: 15px;
+}
+.template-empty {
+    color: #888;
+    font-size: 13px;
+    padding: 10px 0;
+}
+.template-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 8px;
+    background: #fafafa;
+}
+.template-item-name {
+    font-weight: bold;
+    margin-bottom: 8px;
+    word-break: break-all;
+}
+.template-item-buttons {
+    display: flex;
+    gap: 6px;
+}
+.template-item-buttons button {
+    flex: 1;
+    padding: 7px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: white;
+    cursor: pointer;
+}
+.template-item-buttons button:hover {
+    background: #eee;
+}
+.template-help {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #777;
+    line-height: 1.5;
+}
+/* =====================================
+   모바일
+===================================== */
+@media (max-width: 700px) {
+    .container {
+        flex-direction: column;
+    }
+    .control-panel {
+        width: 100%;
+    }
+    .preview-area {
+        position: static;
+        max-height: none;
+        overflow: visible;
+        width: 100%;
+    }
+    .template-panel {
+        width: 100%;
+        flex: none;
+        position: static;
+    }
+}
+</style>
+</head>
+<body>
+<header>
+    <h1>짤·카드 스튜디오</h1>
+    <p>
+        이미지를 업로드하고
+        나만의 밈·카드를 만들어보세요.
+    </p>
+</header>
+<div class="container">
+<!-- =====================================
+     왼쪽 설정
+===================================== -->
+<div class="control-panel">
+    <h2>설정</h2>
+    <!-- 이미지 업로드 -->
+    <label
+        for="imageInput"
+        class="upload-button">
+
+        이미지 선택
+
+    </label>
+    <input
+        type="file"
+        id="imageInput"
+        accept="image/png, image/jpeg">
+    <div class="help-text">
+
+        PNG 또는 JPG/JPEG 파일만
+        업로드할 수 있습니다.
+
+    </div>
+    <div id="errorMessage"></div>
+    <!-- =================================
+         일반 텍스트
+    ================================== -->
+    <div class="setting">
+        <label>
+            텍스트
+        </label>
+        <input
+            type="text"
+            id="textInput"
+            placeholder="텍스트를 입력하세요">
+    </div>
+    <!-- 글자 크기 -->
+    <div class="setting">
+        <label>
+            글자 크기
+        </label>
+        <input
+            type="number"
+            id="fontSize"
+            value="40"
+            min="10"
+            max="200">
+    </div>
+
+    <!-- 글자 색 -->
+    <div class="setting">
+        <label>
+            글자 색
+        </label>
+        <input
+            type="color"
+            id="textColor"
+            value="#ffffff">
+    </div>
+    <!-- =================================
+         윤곽선 색
+    ================================== -->
+    <div class="setting">
+        <label>
+            글자 윤곽선 색
+        </label>
+        <input
+            type="color"
+            id="outlineColor"
+            value="#000000">
+    </div>
+    <!-- 윤곽선 굵기 -->
+    <div class="setting">
+        <label>
+            윤곽선 굵기
+            <span id="outlineWidthValue">
+                3px
+            </span>
+        </label>
+        <input
+            type="range"
+            id="outlineWidth"
+            min="0"
+            max="20"
+            value="3">
+    </div>
+    <!-- =================================
+         일반 텍스트 회전
+    ================================== -->
+    <div class="setting">
+        <label>
+            글자 회전
+            <span id="rotationValue">
+                0°
+            </span>
+        </label>
+        <input
+            type="range"
+            id="rotation"
+            min="-180"
+            max="180"
+            value="0">
+    </div>
+    <!-- =================================
+         별
+    ================================== -->
+    <div class="setting">
+        <button
+            type="button"
+            class="icon-toggle"
+            id="starToggle">
+            ⭐ 별 이모지 추가
+        </button>
+        <div
+            class="icon-panel"
+            id="starPanel">
+            <div class="icon-list">
+                <button
+                    type="button"
+                    class="icon-button"
+                    data-icon="노란별.png">
+                    <img
+                        src="노란별.png"
+                        alt="노란별">
+                </button>
+                <button
+                    type="button"
+                    class="icon-button"
+                    data-icon="파란별.png">
+                    <img
+                        src="파란별.png"
+                        alt="파란별">
+                </button>
+                <button
+                    type="button"
+                    class="icon-button"
+                    data-icon="보라별.png">
+                    <img
+                        src="보라별.png"
+                        alt="보라별">
+                </button>
+                <button
+                    type="button"
+                    class="icon-button"
+                    data-icon="초록별.png">
+                    <img
+                        src="초록별.png"
+                        alt="초록별">
+                </button>
+                <button
+                    type="button"
+                    class="icon-button"
+                    data-icon="핑크별.png">
+                    <img
+                        src="핑크별.png"
+                        alt="핑크별">
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- =================================
+         하트
+    ================================== -->
+    <div class="setting">
+        <button
+            type="button"
+            class="icon-toggle"
+            id="heartToggle">
+            ❤️ 하트 이모지 추가
+        </button>
+        <div
+            class="icon-panel"
+            id="heartPanel">
+            <div class="icon-list">
+                <button
+                    type="button"
+                    class="icon-button"
+                    data-heart="노란하트.png">
+                    <img
+                        src="노란하트.png"
+                        alt="노란하트">
+                </button>
+                <button
+                    type="button"
+                    class="icon-button"
+                    data-heart="보라하트.png">
+                    <img
+                        src="보라하트.png"
+                        alt="보라하트">
+                </button>
+                <button
+                    type="button"
+                    class="icon-button"
+                    data-heart="파란하트.png">
+                    <img
+                        src="파란하트.png"
+                        alt="파란하트">
+                </button>
+                <button
+                    type="button"
+                    class="icon-button"
+                    data-heart="핑크하트.png">
+                    <img
+                        src="핑크하트.png"
+                        alt="핑크하트">
+                </button>
+                <button
+                    type="button"
+                    class="icon-button"
+                    data-heart="초록하트.png">
+                    <img
+                        src="초록하트.png"
+                        alt="초록하트">
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- =================================
+         글자 이모지
+    ================================== -->
+    <div class="setting">
+        <button
+            type="button"
+            class="icon-toggle"
+            id="textEmojiToggle">
+            📝 글자 이모지 추가
+        </button>
+        <div
+            class="icon-panel"
+            id="textEmojiPanel">
+            <div class="icon-list">
+                <button
+                    type="button"
+                    class="icon-button"
+                    data-text-emoji="굿.png">
+                    <img
+                        src="굿.png"
+                        alt="굿">
+                </button>
+                <button
+                    type="button"
+                    class="icon-button"
+                    data-text-emoji="신.png">
+                    <img
+                        src="신.png"
+                        alt="신">
+                </button>
+                <button
+                    type="button"
+                    class="icon-button"
+                    data-text-emoji="천재.png">
+                    <img
+                        src="천재.png"
+                        alt="천재">
+                </button>
+                <button
+                    type="button"
+                    class="icon-button"
+                    data-text-emoji="최고.png">
+                    <img
+                        src="최고.png"
+                        alt="최고">
+                </button>
+                <button
+                    type="button"
+                    class="icon-button"
+                    data-text-emoji="최애.png">
+                    <img
+                        src="최애.png"
+                        alt="최애">
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- =================================
+         선택한 이모지 조절
+    ================================== -->
+
+    <div
+        id="iconControlBox">
+
+
+        <!-- 크기 -->
+
+        <label>
+
+            선택한 이모지 크기
+
+            <span
+                class="icon-value"
+                id="iconSizeValue">
+
+                70px
+
+            </span>
+
+        </label>
+
+
+        <input
+            type="range"
+            id="iconSize"
+            min="20"
+            max="300"
+            value="70">
+
+
+
+        <!-- 회전 -->
+
+        <div
+            style="margin-top:15px;">
+
+            <label>
+
+                선택한 이모지 회전
+
+                <span
+                    class="icon-value"
+                    id="iconRotationValue">
+
+                    0°
+
+                </span>
+
+            </label>
+
+
+            <input
+                type="range"
+                id="iconRotation"
+                min="-180"
+                max="180"
+                value="0">
+
+        </div>
+
+
+
+        <!-- 삭제 -->
+
+        <button
+            type="button"
+            class="delete-icon-button"
+            id="deleteIconButton">
+
+            🗑 선택한 이모지 삭제
+
+        </button>
+
+
+    </div>
+
+
+
+    <!-- =================================
+         저장
+    ================================== -->
+
+    <div class="setting">
+
+        <button
+            type="button"
+            class="save-button"
+            id="savePNG">
+
+            PNG로 저장
+
+        </button>
+
+
+        <button
+            type="button"
+            class="save-button"
+            id="saveJPG">
+
+            JPG로 저장
+
+        </button>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =====================================
+     오른쪽 미리보기
+===================================== -->
+
+<div class="preview-area">
+
+    <h2>미리보기</h2>
+
+
+    <div id="emptyMessage">
+
+        이미지를 선택하면
+        <br>
+        여기에 미리보기가 나타납니다.
+
+    </div>
+
+
+    <div id="editor">
+
+        <img
+            id="imagePreview"
+            alt="업로드된 이미지">
+
+
+        <div
+            id="textPreview">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================
+     오른쪽 템플릿 패널
+===================================== -->
+
+<div class="template-panel">
+
+    <h2>템플릿</h2>
+
+    <input
+        type="text"
+        id="templateName"
+        placeholder="템플릿 이름을 입력하세요">
+
+    <button
+        type="button"
+        id="saveTemplateButton">
+        현재 편집 상태 저장
+    </button>
+
+    <div class="template-help">
+        템플릿에는 이미지 자체를 저장하지 않고
+        글자·윤곽선·이모지의 편집 정보만 저장합니다.
+        따라서 많은 템플릿을 저장할 수 있습니다.
+    </div>
+
+    <div id="templateList">
+        <div class="template-empty">
+            저장된 템플릿이 없습니다.
+        </div>
+    </div>
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =====================================
+   기본 요소
+===================================== */
+
+const imageInput =
+    document.getElementById(
+        "imageInput"
+    );
+
+const imagePreview =
+    document.getElementById(
+        "imagePreview"
+    );
+
+const emptyMessage =
+    document.getElementById(
+        "emptyMessage"
+    );
+
+const errorMessage =
+    document.getElementById(
+        "errorMessage"
+    );
+
+const textInput =
+    document.getElementById(
+        "textInput"
+    );
+
+const fontSize =
+    document.getElementById(
+        "fontSize"
+    );
+
+const textColor =
+    document.getElementById(
+        "textColor"
+    );
+
+const outlineColor =
+    document.getElementById(
+        "outlineColor"
+    );
+
+const outlineWidth =
+    document.getElementById(
+        "outlineWidth"
+    );
+
+const outlineWidthValue =
+    document.getElementById(
+        "outlineWidthValue"
+    );
+
+const rotation =
+    document.getElementById(
+        "rotation"
+    );
+
+const rotationValue =
+    document.getElementById(
+        "rotationValue"
+    );
+
+const textPreview =
+    document.getElementById(
+        "textPreview"
+    );
+
+const editor =
+    document.getElementById(
+        "editor"
+    );
+
+
+
+/* =====================================
+   현재 선택한 이모지
+===================================== */
+
+let selectedIcon = null;
+
+
+
+/* =====================================
+   이미지 업로드
+===================================== */
+
+imageInput.addEventListener(
+    "change",
+    function() {
+
+        errorMessage.style.display =
+            "none";
+
+        errorMessage.textContent =
+            "";
+
+        const file =
+            imageInput.files[0];
+
+
+        if (!file) {
+
+            return;
+        }
+
+
+        if (
+            file.type !== "image/png" &&
+            file.type !== "image/jpeg"
+        ) {
+
+            errorMessage.textContent =
+                "PNG 또는 JPG/JPEG 이미지만 사용할 수 있습니다.";
+
+            errorMessage.style.display =
+                "block";
+
+            imageInput.value =
+                "";
+
+            return;
+        }
+
+
+        if (
+            file.size >
+            10 * 1024 * 1024
+        ) {
+
+            errorMessage.textContent =
+                "파일 크기는 10MB 이하만 가능합니다.";
+
+            errorMessage.style.display =
+                "block";
+
+            imageInput.value =
+                "";
+
+            return;
+        }
+
+
+        const imageURL =
+            URL.createObjectURL(
+                file
+            );
+
+
+        imagePreview.src =
+            imageURL;
+
+
+        imagePreview.onload =
+            function() {
+
+                imagePreview.style.display =
+                    "block";
+
+                emptyMessage.style.display =
+                    "none";
+
+                URL.revokeObjectURL(
+                    imageURL
+                );
+
+            };
+
+    }
+);
+
+
+
+/* =====================================
+   일반 텍스트
+===================================== */
+
+textInput.addEventListener(
+    "input",
+    function() {
+
+        textPreview.textContent =
+            textInput.value;
+
+    }
+);
+
+
+
+/* =====================================
+   글자 크기
+===================================== */
+
+fontSize.addEventListener(
+    "input",
+    function() {
+
+        textPreview.style.fontSize =
+            fontSize.value + "px";
+
+    }
+);
+
+
+
+/* =====================================
+   글자 색
+===================================== */
+
+textColor.addEventListener(
+    "input",
+    function() {
+
+        textPreview.style.color =
+            textColor.value;
+
+    }
+);
+
+
+
+/* =====================================
+   윤곽선 색
+===================================== */
+
+outlineColor.addEventListener(
+    "input",
+    function() {
+
+        textPreview.style.webkitTextStrokeColor =
+            outlineColor.value;
+
+    }
+);
+
+
+
+/* =====================================
+   윤곽선 굵기
+===================================== */
+
+outlineWidth.addEventListener(
+    "input",
+    function() {
+
+        const value =
+            outlineWidth.value;
+
+
+        outlineWidthValue.textContent =
+            value + "px";
+
+
+        textPreview.style.webkitTextStrokeWidth =
+            value + "px";
+
+    }
+);
+
+
+
+/* =====================================
+   일반 텍스트 회전
+===================================== */
+
+rotation.addEventListener(
+    "input",
+    function() {
+
+        rotationValue.textContent =
+            rotation.value + "°";
+
+
+        textPreview.style.transform =
+            "translate(-50%, -50%) rotate(" +
+            rotation.value +
+            "deg)";
+
+    }
+);
+
+
+
+/* =====================================
+   패널 열기
+===================================== */
+
+function togglePanel(
+    panel
+) {
+
+    if (
+        panel.style.display ===
+        "block"
+    ) {
+
+        panel.style.display =
+            "none";
+
+    } else {
+
+        panel.style.display =
+            "block";
+
+    }
+
+}
+
+
+document
+.getElementById(
+    "starToggle"
+)
+.addEventListener(
+    "click",
+    function() {
+
+        togglePanel(
+            document.getElementById(
+                "starPanel"
+            )
+        );
+
+    }
+);
+
+
+document
+.getElementById(
+    "heartToggle"
+)
+.addEventListener(
+    "click",
+    function() {
+
+        togglePanel(
+            document.getElementById(
+                "heartPanel"
+            )
+        );
+
+    }
+);
+
+
+document
+.getElementById(
+    "textEmojiToggle"
+)
+.addEventListener(
+    "click",
+    function() {
+
+        togglePanel(
+            document.getElementById(
+                "textEmojiPanel"
+            )
+        );
+
+    }
+);
+
+
+
+/* =====================================
+   검정 배경 제거
+   -------------------------------------
+   가장자리와 연결된 검정색만 제거
+===================================== */
+
+function removeBlackBackground(
+    image
+) {
+
+    return new Promise(
+        function(resolve, reject) {
+
+            const canvas =
+                document.createElement(
+                    "canvas"
+                );
+
+
+            const ctx =
+                canvas.getContext(
+                    "2d",
+                    {
+                        willReadFrequently:
+                            true
+                    }
+                );
+
+
+            canvas.width =
+                image.naturalWidth;
+
+            canvas.height =
+                image.naturalHeight;
+
+
+            ctx.drawImage(
+                image,
+                0,
+                0
+            );
+
+
+            let imageData;
+
+
+            try {
+
+                imageData =
+                    ctx.getImageData(
+                        0,
+                        0,
+                        canvas.width,
+                        canvas.height
+                    );
+
+            } catch(error) {
+
+                reject(error);
+
+                return;
+            }
+
+
+            const data =
+                imageData.data;
+
+
+            const width =
+                canvas.width;
+
+            const height =
+                canvas.height;
+
+
+            /*
+             * 검정색 판정
+             *
+             * 완전한 검정뿐만 아니라
+             * 아주 어두운 검정까지 처리
+             */
+
+            function isBlack(
+                x,
+                y
+            ) {
+
+                const index =
+                    (
+                        y * width + x
+                    ) * 4;
+
+
+                const r =
+                    data[index];
+
+                const g =
+                    data[index + 1];
+
+                const b =
+                    data[index + 2];
+
+                const a =
+                    data[index + 3];
+
+
+                if (
+                    a === 0
+                ) {
+
+                    return false;
+                }
+
+
+                return (
+                    r <= 35 &&
+                    g <= 35 &&
+                    b <= 35
+                );
+
+            }
+
+
+            /*
+             * 방문 여부
+             */
+
+            const visited =
+                new Uint8Array(
+                    width * height
+                );
+
+
+            /*
+             * BFS 큐
+             */
+
+            const queue = [];
+
+
+            function addIfBlack(
+                x,
+                y
+            ) {
+
+                if (
+                    x < 0 ||
+                    y < 0 ||
+                    x >= width ||
+                    y >= height
+                ) {
+
+                    return;
+                }
+
+
+                const position =
+                    y * width + x;
+
+
+                if (
+                    visited[position]
+                ) {
+
+                    return;
+                }
+
+
+                if (
+                    !isBlack(
+                        x,
+                        y
+                    )
+                ) {
+
+                    return;
+                }
+
+
+                visited[position] =
+                    1;
+
+
+                queue.push(
+                    [x, y]
+                );
+
+            }
+
+
+            /*
+             * 이미지 가장자리에서
+             * 시작되는 검정색 찾기
+             */
+
+            for (
+                let x = 0;
+                x < width;
+                x++
+            ) {
+
+                addIfBlack(
+                    x,
+                    0
+                );
+
+                addIfBlack(
+                    x,
+                    height - 1
+                );
+
+            }
+
+
+            for (
+                let y = 0;
+                y < height;
+                y++
+            ) {
+
+                addIfBlack(
+                    0,
+                    y
+                );
+
+                addIfBlack(
+                    width - 1,
+                    y
+                );
+
+            }
+
+
+            /*
+             * 연결된 검정 영역을
+             * 투명하게 만들기
+             */
+
+            let queueIndex = 0;
+
+
+            while (
+                queueIndex <
+                queue.length
+            ) {
+
+                const point =
+                    queue[
+                        queueIndex++
+                    ];
+
+
+                const x =
+                    point[0];
+
+                const y =
+                    point[1];
+
+
+                const pixelIndex =
+                    (
+                        y * width + x
+                    ) * 4;
+
+
+                /*
+                 * 투명 처리
+                 */
+
+                data[
+                    pixelIndex + 3
+                ] = 0;
+
+
+                /*
+                 * 상
+                 */
+
+                addIfBlack(
+                    x,
+                    y - 1
+                );
+
+
+                /*
+                 * 하
+                 */
+
+                addIfBlack(
+                    x,
+                    y + 1
+                );
+
+
+                /*
+                 * 좌
+                 */
+
+                addIfBlack(
+                    x - 1,
+                    y
+                );
+
+
+                /*
+                 * 우
+                 */
+
+                addIfBlack(
+                    x + 1,
+                    y
+                );
+
+            }
+
+
+            ctx.putImageData(
+                imageData,
+                0,
+                0
+            );
+
+
+            /*
+             * 투명 PNG로 변환
+             */
+
+            const result =
+                new Image();
+
+
+            result.onload =
+                function() {
+
+                    resolve(
+                        result
+                    );
+
+                };
+
+
+            result.onerror =
+                function() {
+
+                    reject(
+                        new Error(
+                            "투명 이미지 생성 실패"
+                        )
+                    );
+
+                };
+
+
+            result.src =
+                canvas.toDataURL(
+                    "image/png"
+                );
+
+        }
+    );
+
+}
+
+
+
+/* =====================================
+   이모지 추가
+   -------------------------------------
+   별 / 하트 / 글자 이모지를
+   모두 같은 방식으로 처리
+===================================== */
+
+async function addEmoji(
+    fileName
+) {
+
+    return new Promise(
+        function(resolve, reject) {
+
+            const original =
+                new Image();
+
+
+            original.onload =
+                async function() {
+
+                    try {
+
+                        const cleanImage =
+                            await removeBlackBackground(
+                                original
+                            );
+
+
+                        const emoji =
+                            document.createElement(
+                                "img"
+                            );
+
+
+                        emoji.src =
+                            cleanImage.src;
+
+
+                        emoji.className =
+                            "added-icon";
+
+
+                        /*
+                         * 실제 이미지 대신
+                         * 파일 이름만 저장
+                         */
+
+                        emoji.dataset.fileName =
+                            fileName;
+
+
+                        const size = 70;
+
+                        emoji.style.width =
+                            size + "px";
+
+                        emoji.style.height =
+                            size + "px";
+
+                        emoji.style.left =
+                            (
+                                editor.clientWidth / 2 -
+                                size / 2
+                            ) + "px";
+
+                        emoji.style.top =
+                            (
+                                editor.clientHeight / 2 -
+                                size / 2
+                            ) + "px";
+
+                        emoji.style.transform =
+                            "rotate(0deg)";
+
+                        editor.appendChild(
+                            emoji
+                        );
+
+                        makeDraggable(
+                            emoji
+                        );
+
+                        selectIcon(
+                            emoji
+                        );
+
+                        resolve(
+                            emoji
+                        );
+
+                    } catch(error) {
+
+                        console.error(
+                            error
+                        );
+
+                        alert(
+                            "이모지를 추가하는 중 오류가 발생했습니다."
+                        );
+
+                        reject(error);
+
+                    }
+
+                };
+
+
+            original.onerror =
+                function() {
+
+                    alert(
+                        fileName +
+                        " 파일을 찾을 수 없습니다."
+                    );
+
+                    reject(
+                        new Error(
+                            fileName +
+                            " 파일을 찾을 수 없습니다."
+                        )
+                    );
+
+                };
+
+
+            original.src =
+                fileName +
+                "?v=" +
+                Date.now();
+
+        }
+    );
+
+}
+
+
+
+/* =====================================
+   별 추가
+===================================== */
+
+document
+.querySelectorAll(
+    "[data-icon]"
+)
+.forEach(
+    function(button) {
+
+        button.addEventListener(
+            "click",
+            function() {
+
+                addEmoji(
+                    button.dataset.icon
+                );
+
+            }
+        );
+
+    }
+);
+
+
+
+/* =====================================
+   하트 추가
+===================================== */
+
+document
+.querySelectorAll(
+    "[data-heart]"
+)
+.forEach(
+    function(button) {
+
+        button.addEventListener(
+            "click",
+            function() {
+
+                addEmoji(
+                    button.dataset.heart
+                );
+
+            }
+        );
+
+    }
+);
+
+
+
+/* =====================================
+   글자 이모지 추가
+===================================== */
+
+document
+.querySelectorAll(
+    "[data-text-emoji]"
+)
+.forEach(
+    function(button) {
+
+        button.addEventListener(
+            "click",
+            function() {
+
+                /*
+                 * 이제 글자 이모지도
+                 * addEmoji()를 사용
+                 *
+                 * 따라서 검정 배경 제거됨
+                 */
+
+                addEmoji(
+                    button.dataset.textEmoji
+                );
+
+            }
+        );
+
+    }
+);
+
+
+
+/* =====================================
+   이모지 선택
+===================================== */
+
+function selectIcon(
+    element
+) {
+
+    /*
+     * 기존 선택 제거
+     */
+
+    document
+    .querySelectorAll(
+        ".added-icon.selected"
+    )
+    .forEach(
+        function(item) {
+
+            item.classList.remove(
+                "selected"
+            );
+
+        }
+    );
+
+
+    /*
+     * 새 선택
+     */
+
+    selectedIcon =
+        element;
+
+
+    selectedIcon.classList.add(
+        "selected"
+    );
+
+
+    /*
+     * 조절창 표시
+     */
+
+    document
+    .getElementById(
+        "iconControlBox"
+    )
+    .style.display =
+        "block";
+
+
+    /*
+     * 현재 크기 읽기
+     */
+
+    const size =
+        selectedIcon.offsetWidth;
+
+
+    document
+    .getElementById(
+        "iconSize"
+    )
+    .value =
+        Math.round(size);
+
+
+    document
+    .getElementById(
+        "iconSizeValue"
+    )
+    .textContent =
+        Math.round(size) +
+        "px";
+
+
+    /*
+     * 현재 회전값 읽기
+     */
+
+    const angle =
+        getRotation(
+            selectedIcon
+        );
+
+
+    document
+    .getElementById(
+        "iconRotation"
+    )
+    .value =
+        angle;
+
+
+    document
+    .getElementById(
+        "iconRotationValue"
+    )
+    .textContent =
+        angle +
+        "°";
+
+}
+
+
+
+/* =====================================
+   이모지 크기
+   -------------------------------------
+   별 / 하트 / 글자 모두 적용
+===================================== */
+
+const iconSize =
+    document.getElementById(
+        "iconSize"
+    );
+
+const iconSizeValue =
+    document.getElementById(
+        "iconSizeValue"
+    );
+
+
+iconSize.addEventListener(
+    "input",
+    function() {
+
+        if (
+            !selectedIcon
+        ) {
+
+            return;
+        }
+
+
+        const value =
+            Number(
+                iconSize.value
+            );
+
+
+        selectedIcon.style.width =
+            value + "px";
+
+
+        selectedIcon.style.height =
+            value + "px";
+
+
+        iconSizeValue.textContent =
+            value + "px";
+
+    }
+);
+
+
+
+/* =====================================
+   이모지 회전
+   -------------------------------------
+   별 / 하트 / 글자 모두 적용
+===================================== */
+
+const iconRotation =
+    document.getElementById(
+        "iconRotation"
+    );
+
+const iconRotationValue =
+    document.getElementById(
+        "iconRotationValue"
+    );
+
+
+iconRotation.addEventListener(
+    "input",
+    function() {
+
+        if (
+            !selectedIcon
+        ) {
+
+            return;
+        }
+
+
+        const value =
+            Number(
+                iconRotation.value
+            );
+
+
+        selectedIcon.style.transform =
+            "rotate(" +
+            value +
+            "deg)";
+
+
+        iconRotationValue.textContent =
+            value +
+            "°";
+
+    }
+);
+
+
+
+/* =====================================
+   이모지 삭제
+===================================== */
+
+document
+.getElementById(
+    "deleteIconButton"
+)
+.addEventListener(
+    "click",
+    function() {
+
+        if (
+            !selectedIcon
+        ) {
+
+            return;
+        }
+
+
+        selectedIcon.remove();
+
+
+        selectedIcon =
+            null;
+
+
+        document
+        .getElementById(
+            "iconControlBox"
+        )
+        .style.display =
+            "none";
+
+    }
+);
+
+
+
+/* =====================================
+   이모지 드래그
+===================================== */
+
+function makeDraggable(
+    element
+) {
+
+    let dragging =
+        false;
+
+
+    let offsetX =
+        0;
+
+
+    let offsetY =
+        0;
+
+
+    element.addEventListener(
+        "mousedown",
+        function(event) {
+
+            /*
+             * 먼저 이모지 선택
+             */
+
+            selectIcon(
+                element
+            );
+
+
+            dragging =
+                true;
+
+
+            const rect =
+                element.getBoundingClientRect();
+
+
+            offsetX =
+                event.clientX -
+                rect.left;
+
+
+            offsetY =
+                event.clientY -
+                rect.top;
+
+
+            event.preventDefault();
+
+        }
+    );
+
+
+    document.addEventListener(
+        "mousemove",
+        function(event) {
+
+            if (
+                !dragging
+            ) {
+
+                return;
+            }
+
+
+            const editorRect =
+                editor.getBoundingClientRect();
+
+
+            let x =
+                event.clientX -
+                editorRect.left -
+                offsetX;
+
+
+            let y =
+                event.clientY -
+                editorRect.top -
+                offsetY;
+
+
+            /*
+             * 편집 영역 밖으로
+             * 나가지 않도록 제한
+             */
+
+            x =
+                Math.max(
+                    0,
+                    Math.min(
+                        x,
+                        editor.clientWidth -
+                        element.offsetWidth
+                    )
+                );
+
+
+            y =
+                Math.max(
+                    0,
+                    Math.min(
+                        y,
+                        editor.clientHeight -
+                        element.offsetHeight
+                    )
+                );
+
+
+            element.style.left =
+                x + "px";
+
+
+            element.style.top =
+                y + "px";
+
+        }
+    );
+
+
+    document.addEventListener(
+        "mouseup",
+        function() {
+
+            dragging =
+                false;
+
+        }
+    );
+
+}
+
+
+
+/* =====================================
+   회전값 읽기
+===================================== */
+
+function getRotation(
+    element
+) {
+
+    const transform =
+        window.getComputedStyle(
+            element
+        ).transform;
+
+
+    if (
+        !transform ||
+        transform === "none"
+    ) {
+
+        return 0;
+    }
+
+
+    const values =
+        transform
+        .split("(")[1]
+        .split(")")[0]
+        .split(",");
+
+
+    const a =
+        parseFloat(
+            values[0]
+        );
+
+
+    const b =
+        parseFloat(
+            values[1]
+        );
+
+
+    let angle =
+        Math.round(
+            Math.atan2(
+                b,
+                a
+            ) *
+            180 /
+            Math.PI
+        );
+
+
+    return angle;
+
+}
+
+
+
+/* =====================================
+   일반 텍스트 드래그
+===================================== */
+
+let textDragging =
+    false;
+
+
+let textOffsetX =
+    0;
+
+
+let textOffsetY =
+    0;
+
+
+textPreview.addEventListener(
+    "mousedown",
+    function(event) {
+
+        textDragging =
+            true;
+
+
+        const rect =
+            textPreview.getBoundingClientRect();
+
+
+        textOffsetX =
+            event.clientX -
+            rect.left;
+
+
+        textOffsetY =
+            event.clientY -
+            rect.top;
+
+
+        event.preventDefault();
+
+    }
+);
+
+
+document.addEventListener(
+    "mousemove",
+    function(event) {
+
+        if (
+            !textDragging
+        ) {
+
+            return;
+        }
+
+
+        const editorRect =
+            editor.getBoundingClientRect();
+
+
+        const x =
+            event.clientX -
+            editorRect.left -
+            textOffsetX;
+
+
+        const y =
+            event.clientY -
+            editorRect.top -
+            textOffsetY;
+
+
+        textPreview.style.left =
+            x + "px";
+
+
+        textPreview.style.top =
+            y + "px";
+
+
+        textPreview.style.transform =
+            "rotate(" +
+            rotation.value +
+            "deg)";
+
+    }
+);
+
+
+document.addEventListener(
+    "mouseup",
+    function() {
+
+        textDragging =
+            false;
+
+    }
+);
+
+
+
+/* =====================================
+   이미지 저장
+===================================== */
+
+function saveImage(
+    type
+) {
+
+    if (
+        !imagePreview.naturalWidth
+    ) {
+
+        alert(
+            "먼저 이미지를 선택해주세요."
+        );
+
+        return;
+    }
+
+
+    const canvas =
+        document.createElement(
+            "canvas"
+        );
+
+
+    const ctx =
+        canvas.getContext(
+            "2d"
+        );
+
+
+    canvas.width =
+        imagePreview.naturalWidth;
+
+
+    canvas.height =
+        imagePreview.naturalHeight;
+
+
+    /*
+     * 원본 이미지
+     */
+
+    ctx.drawImage(
+        imagePreview,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    const imageRect =
+        imagePreview.getBoundingClientRect();
+
+
+    const scaleX =
+        canvas.width /
+        imageRect.width;
+
+
+    const scaleY =
+        canvas.height /
+        imageRect.height;
+
+
+
+    /* =================================
+       일반 텍스트 저장
+    ================================= */
+
+    if (
+        textPreview.textContent.trim()
+        !== ""
+    ) {
+
+        const rect =
+            textPreview.getBoundingClientRect();
+
+
+        const x =
+            (
+                rect.left +
+                rect.width / 2 -
+                imageRect.left
+            ) * scaleX;
+
+
+        const y =
+            (
+                rect.top +
+                rect.height / 2 -
+                imageRect.top
+            ) * scaleY;
+
+
+        const size =
+            parseInt(
+                fontSize.value
+            ) * scaleX;
+
+
+        ctx.save();
+
+
+        ctx.translate(
+            x,
+            y
+        );
+
+
+        ctx.rotate(
+            Number(
+                rotation.value
+            ) *
+            Math.PI /
+            180
+        );
+
+
+        ctx.font =
+            "bold " +
+            size +
+            "px Arial";
+
+
+        ctx.textAlign =
+            "center";
+
+
+        ctx.textBaseline =
+            "middle";
+
+
+        /*
+         * 윤곽선
+         */
+
+        ctx.lineWidth =
+            Number(
+                outlineWidth.value
+            ) * scaleX;
+
+
+        ctx.strokeStyle =
+            outlineColor.value;
+
+
+        ctx.strokeText(
+            textPreview.textContent,
+            0,
+            0
+        );
+
+
+        /*
+         * 글자
+         */
+
+        ctx.fillStyle =
+            textColor.value;
+
+
+        ctx.fillText(
+            textPreview.textContent,
+            0,
+            0
+        );
+
+
+        ctx.restore();
+
+    }
+
+
+
+    /* =================================
+       모든 이모지 저장
+    ================================= */
+
+    const icons =
+        document.querySelectorAll(
+            ".added-icon"
+        );
+
+
+    icons.forEach(
+        function(icon) {
+
+            drawRotatedImage(
+                ctx,
+                icon,
+                imageRect,
+                scaleX,
+                scaleY
+            );
+
+        }
+    );
+
+
+
+    /* =================================
+       다운로드
+    ================================= */
+
+    const link =
+        document.createElement(
+            "a"
+        );
+
+
+    if (
+        type === "png"
+    ) {
+
+        link.download =
+            "짤카드.png";
+
+
+        link.href =
+            canvas.toDataURL(
+                "image/png"
+            );
+
+    } else {
+
+        link.download =
+            "짤카드.jpg";
+
+
+        link.href =
+            canvas.toDataURL(
+                "image/jpeg",
+                0.95
+            );
+
+    }
+
+
+    link.click();
+
+}
+
+
+
+/* =====================================
+   회전된 이모지 저장
+===================================== */
+
+function drawRotatedImage(
+    ctx,
+    element,
+    imageRect,
+    scaleX,
+    scaleY
+) {
+
+    const rect =
+        element.getBoundingClientRect();
+
+
+    /*
+     * 이미지 중심
+     */
+
+    const x =
+        (
+            rect.left +
+            rect.width / 2 -
+            imageRect.left
+        ) * scaleX;
+
+
+    const y =
+        (
+            rect.top +
+            rect.height / 2 -
+            imageRect.top
+        ) * scaleY;
+
+
+    /*
+     * 크기
+     */
+
+    const width =
+        rect.width *
+        scaleX;
+
+
+    const height =
+        rect.height *
+        scaleY;
+
+
+    /*
+     * 회전값
+     */
+
+    const angle =
+        getRotation(
+            element
+        ) *
+        Math.PI /
+        180;
+
+
+    ctx.save();
+
+
+    ctx.translate(
+        x,
+        y
+    );
+
+
+    ctx.rotate(
+        angle
+    );
+
+
+    ctx.drawImage(
+        element,
+        -width / 2,
+        -height / 2,
+        width,
+        height
+    );
+
+
+    ctx.restore();
+
+}
+
+
+
+/* =====================================
+   템플릿 저장 / 불러오기
+   -------------------------------------
+   이미지 Base64 데이터는 저장하지 않고
+   편집 설정만 JSON으로 저장합니다.
+===================================== */
+
+const TEMPLATE_STORAGE_KEY =
+    "funny_box_templates_v2";
+
+
+function getNumberStyle(
+    element,
+    property
+) {
+
+    const value =
+        parseFloat(
+            element.style[property]
+        );
+
+    return Number.isFinite(value)
+        ? value
+        : 0;
+}
+
+
+function makeTemplateState() {
+
+    const state = {
+
+        version: 2,
+
+        text: {
+            value: textInput.value,
+            fontSize: Number(fontSize.value),
+            color: textColor.value,
+            outlineColor: outlineColor.value,
+            outlineWidth: Number(outlineWidth.value),
+            rotation: Number(rotation.value),
+            left: getNumberStyle(textPreview, "left"),
+            top: getNumberStyle(textPreview, "top")
+        },
+
+        icons: []
+
+    };
+
+
+    document
+    .querySelectorAll(".added-icon")
+    .forEach(
+        function(icon) {
+
+            const fileName =
+                icon.dataset.fileName || "";
+
+            if (!fileName) {
+                return;
+            }
+
+            state.icons.push({
+
+                fileName: fileName,
+
+                left: getNumberStyle(icon, "left"),
+                top: getNumberStyle(icon, "top"),
+                width: icon.offsetWidth,
+                height: icon.offsetHeight,
+                rotation: getRotation(icon)
+
+            });
+
+        }
+    );
+
+
+    return state;
+
+}
+
+
+function getTemplates() {
+
+    try {
+
+        const raw =
+            localStorage.getItem(
+                TEMPLATE_STORAGE_KEY
+            );
+
+        if (!raw) {
+            return [];
+        }
+
+        const data =
+            JSON.parse(raw);
+
+        return Array.isArray(data)
+            ? data
+            : [];
+
+    } catch(error) {
+
+        console.error(
+            "템플릿 읽기 오류:",
+            error
+        );
+
+        return [];
+
+    }
+
+}
+
+
+function saveTemplates(templates) {
+
+    localStorage.setItem(
+        TEMPLATE_STORAGE_KEY,
+        JSON.stringify(templates)
+    );
+
+}
+
+
+function renderTemplateList() {
+
+    const list =
+        document.getElementById(
+            "templateList"
+        );
+
+    const templates =
+        getTemplates();
+
+
+    list.innerHTML = "";
+
+
+    if (templates.length === 0) {
+
+        list.innerHTML =
+            '<div class="template-empty">' +
+            '저장된 템플릿이 없습니다.' +
+            '</div>';
+
+        return;
+
+    }
+
+
+    templates.forEach(
+        function(template, index) {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+            item.className =
+                "template-item";
+
+
+            const name =
+                document.createElement(
+                    "div"
+                );
+
+            name.className =
+                "template-item-name";
+
+            name.textContent =
+                template.name;
+
+
+            const buttons =
+                document.createElement(
+                    "div"
+                );
+
+            buttons.className =
+                "template-item-buttons";
+
+
+            const loadButton =
+                document.createElement(
+                    "button"
+                );
+
+            loadButton.type = "button";
+            loadButton.textContent =
+                "불러오기";
+
+            loadButton.addEventListener(
+                "click",
+                function() {
+                    loadTemplate(template);
+                }
+            );
+
+
+            const deleteButton =
+                document.createElement(
+                    "button"
+                );
+
+            deleteButton.type = "button";
+            deleteButton.textContent =
+                "삭제";
+
+            deleteButton.addEventListener(
+                "click",
+                function() {
+
+                    if (
+                        !confirm(
+                            '"' +
+                            template.name +
+                            '" 템플릿을 삭제할까요?'
+                        )
+                    ) {
+                        return;
+                    }
+
+                    const current =
+                        getTemplates();
+
+                    current.splice(
+                        index,
+                        1
+                    );
+
+                    saveTemplates(
+                        current
+                    );
+
+                    renderTemplateList();
+
+                }
+            );
+
+
+            buttons.appendChild(
+                loadButton
+            );
+
+            buttons.appendChild(
+                deleteButton
+            );
+
+            item.appendChild(
+                name
+            );
+
+            item.appendChild(
+                buttons
+            );
+
+            list.appendChild(
+                item
+            );
+
+        }
+    );
+
+}
+
+
+async function loadTemplate(
+    template
+) {
+
+    const state =
+        template.state;
+
+    if (!state) {
+        alert(
+            "불러올 템플릿 데이터가 없습니다."
+        );
+        return;
+    }
+
+
+    /*
+     * 일반 텍스트 설정 복원
+     */
+
+    const text =
+        state.text || {};
+
+    textInput.value =
+        text.value || "";
+
+    fontSize.value =
+        Number(text.fontSize) || 40;
+
+    textColor.value =
+        text.color || "#ffffff";
+
+    outlineColor.value =
+        text.outlineColor || "#000000";
+
+    outlineWidth.value =
+        Number(text.outlineWidth) || 3;
+
+    rotation.value =
+        Number.isFinite(Number(text.rotation))
+            ? Number(text.rotation)
+            : 0;
+
+    textInput.dispatchEvent(
+        new Event("input")
+    );
+
+    fontSize.dispatchEvent(
+        new Event("input")
+    );
+
+    textColor.dispatchEvent(
+        new Event("input")
+    );
+
+    outlineColor.dispatchEvent(
+        new Event("input")
+    );
+
+    outlineWidth.dispatchEvent(
+        new Event("input")
+    );
+
+    rotation.dispatchEvent(
+        new Event("input")
+    );
+
+
+    if (
+        Number.isFinite(Number(text.left))
+    ) {
+        textPreview.style.left =
+            Number(text.left) + "px";
+    }
+
+    if (
+        Number.isFinite(Number(text.top))
+    ) {
+        textPreview.style.top =
+            Number(text.top) + "px";
+    }
+
+
+    /*
+     * 기존 이모지 삭제
+     */
+
+    document
+    .querySelectorAll(".added-icon")
+    .forEach(
+        function(icon) {
+            icon.remove();
+        }
+    );
+
+    selectedIcon = null;
+
+    document
+    .getElementById("iconControlBox")
+    .style.display = "none";
+
+
+    /*
+     * 이미지가 없으면 설정만 복원하고 종료
+     */
+
+    if (
+        !imagePreview.naturalWidth
+    ) {
+
+        alert(
+            "템플릿 설정은 복원되었습니다. 이미지가 있다면 먼저 이미지를 선택한 뒤 다시 불러오세요."
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * 저장된 이모지는
+     * 파일 이름으로 다시 생성
+     * Base64 데이터를 사용하지 않음
+     */
+
+    const icons =
+        Array.isArray(state.icons)
+            ? state.icons
+            : [];
+
+
+    for (
+        const savedIcon of icons
+    ) {
+
+        if (!savedIcon.fileName) {
+            continue;
+        }
+
+        try {
+
+            const icon =
+                await addEmoji(
+                    savedIcon.fileName
+                );
+
+            icon.style.left =
+                Number(savedIcon.left || 0) +
+                "px";
+
+            icon.style.top =
+                Number(savedIcon.top || 0) +
+                "px";
+
+            icon.style.width =
+                Number(savedIcon.width || 70) +
+                "px";
+
+            icon.style.height =
+                Number(savedIcon.height || 70) +
+                "px";
+
+            icon.style.transform =
+                "rotate(" +
+                Number(savedIcon.rotation || 0) +
+                "deg)";
+
+        } catch(error) {
+
+            console.error(
+                "이모지 복원 실패:",
+                savedIcon.fileName,
+                error
+            );
+
+        }
+
+    }
+
+
+    selectedIcon = null;
+
+    document
+    .getElementById("iconControlBox")
+    .style.display = "none";
+
+    alert(
+        '"' +
+        template.name +
+        '" 템플릿을 불러왔습니다.'
+    );
+
+}
+
+
+document
+.getElementById(
+    "saveTemplateButton"
+)
+.addEventListener(
+    "click",
+    function() {
+
+        const nameInput =
+            document.getElementById(
+                "templateName"
+            );
+
+        const name =
+            nameInput.value.trim();
+
+        if (!name) {
+            alert(
+                "템플릿 이름을 입력해주세요."
+            );
+            nameInput.focus();
+            return;
+        }
+
+
+        const templates =
+            getTemplates();
+
+        const state =
+            makeTemplateState();
+
+        const existingIndex =
+            templates.findIndex(
+                function(item) {
+                    return item.name === name;
+                }
+            );
+
+        const newTemplate = {
+            name: name,
+            savedAt: new Date().toISOString(),
+            state: state
+        };
+
+
+        if (existingIndex >= 0) {
+            templates[existingIndex] =
+                newTemplate;
+        } else {
+            templates.push(
+                newTemplate
+            );
+        }
+
+
+        try {
+
+            saveTemplates(
+                templates
+            );
+
+            renderTemplateList();
+
+            alert(
+                '"' +
+                name +
+                '" 템플릿이 저장되었습니다.'
+            );
+
+        } catch(error) {
+
+            console.error(
+                "템플릿 저장 실패:",
+                error
+            );
+
+            alert(
+                "템플릿 저장에 실패했습니다. 브라우저의 저장 공간을 확인해주세요."
+            );
+
+        }
+
+    }
+);
+
+
+renderTemplateList();
+
+
+
+/* =====================================
+   PNG 저장
+===================================== */
+
+document
+.getElementById(
+    "savePNG"
+)
+.addEventListener(
+    "click",
+    function() {
+
+        saveImage(
+            "png"
+        );
+
+    }
+);
+
+
+
+/* =====================================
+   JPG 저장
+===================================== */
+
+document
+.getElementById(
+    "saveJPG"
+)
+.addEventListener(
+    "click",
+    function() {
+
+        saveImage(
+            "jpg"
+        );
+
+    }
+);
+
+
+</script>
+
+
+</body>
+
+</html>
+```
