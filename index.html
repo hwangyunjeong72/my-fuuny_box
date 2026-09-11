@@ -319,6 +319,22 @@ header p {
         translate(-50%, -50%)
         rotate(0deg);
 }
+    ```css
+/* =================================
+   텍스트 윤곽선
+================================= */
+
+#textPreview {
+
+    -webkit-text-stroke:
+        0px #000000;
+
+    paint-order:
+        stroke fill;
+
+}
+```
+
 
 
 /* =================================
@@ -528,6 +544,50 @@ header p {
         >
 
     </div>
+
+    ```html
+<!-- =================================
+     텍스트 윤곽선
+================================= -->
+
+<div class="setting">
+
+    <label for="textOutlineColor">
+        윤곽선 색
+    </label>
+
+    <input
+        type="color"
+        id="textOutlineColor"
+        value="#000000"
+    >
+
+</div>
+
+
+<div class="setting">
+
+    <label for="textOutlineWidth">
+
+        윤곽선 두께
+
+        <span id="textOutlineWidthValue">
+            0px
+        </span>
+
+    </label>
+
+    <input
+        type="range"
+        id="textOutlineWidth"
+        min="0"
+        max="20"
+        value="0"
+    >
+
+</div>
+```
+
 
 
 
@@ -1063,6 +1123,66 @@ textColor.addEventListener(
 
     }
 );
+    ```javascript
+/* ==========================================
+   텍스트 윤곽선 색상
+========================================== */
+
+const textOutlineColor =
+    document.getElementById(
+        "textOutlineColor"
+    );
+
+
+const textOutlineWidth =
+    document.getElementById(
+        "textOutlineWidth"
+    );
+
+
+const textOutlineWidthValue =
+    document.getElementById(
+        "textOutlineWidthValue"
+    );
+
+
+
+/* 윤곽선 색 변경 */
+
+textOutlineColor.addEventListener(
+    "input",
+    function () {
+
+        textPreview.style.webkitTextStroke =
+            textOutlineWidth.value +
+            "px " +
+            textOutlineColor.value;
+
+    }
+);
+
+
+
+/* 윤곽선 두께 변경 */
+
+textOutlineWidth.addEventListener(
+    "input",
+    function () {
+
+        textOutlineWidthValue.textContent =
+            textOutlineWidth.value +
+            "px";
+
+
+        textPreview.style.webkitTextStroke =
+            textOutlineWidth.value +
+            "px " +
+            textOutlineColor.value;
+
+    }
+);
+```
+
 
 
 
@@ -2240,11 +2360,63 @@ function saveImage(type) {
             "middle";
 
 
-        ctx.fillText(
-            textPreview.textContent,
-            0,
-            0
-        );
+        ```javascript
+/* =================================
+   텍스트 윤곽선 저장
+================================= */
+
+const outlineWidth =
+    Number(
+        textOutlineWidth.value
+    ) * scaleX;
+
+
+const outlineColor =
+    textOutlineColor.value;
+
+
+/* 윤곽선 색 */
+
+ctx.strokeStyle =
+    outlineColor;
+
+
+/* 윤곽선 두께 */
+
+ctx.lineWidth =
+    outlineWidth;
+
+
+/* 윤곽선 */
+
+if (
+    outlineWidth > 0
+) {
+
+    ctx.strokeText(
+        textPreview.textContent,
+        0,
+        0
+    );
+
+}
+
+
+/* 글자 색 */
+
+ctx.fillStyle =
+    textColor.value;
+
+
+/* 글자 */
+
+ctx.fillText(
+    textPreview.textContent,
+    0,
+    0
+);
+```
+
 
 
         ctx.restore();
@@ -2480,6 +2652,14 @@ textPreview.style.fontSize =
 
 textPreview.style.color =
     textColor.value;
+
+    ```javascript
+textPreview.style.webkitTextStroke =
+    textOutlineWidth.value +
+    "px " +
+    textOutlineColor.value;
+```
+
 
 
 </script>
