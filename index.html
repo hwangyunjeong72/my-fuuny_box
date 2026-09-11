@@ -1186,6 +1186,11 @@ textOutlineWidth.addEventListener(
 
 
 
+```javascript
+/* ==========================================
+   글자 회전
+========================================== */
+
 rotation.addEventListener(
     "input",
     function () {
@@ -1194,13 +1199,20 @@ rotation.addEventListener(
             rotation.value + "°";
 
 
+        /*
+         * 텍스트가 현재 위치를 유지하면서
+         * 회전하도록 설정
+         */
+
         textPreview.style.transform =
-            "translate(-50%, -50%) rotate(" +
+            "rotate(" +
             rotation.value +
             "deg)";
 
     }
 );
+```
+
 
 
 
@@ -2125,26 +2137,28 @@ function makeIconDraggable(icon) {
 
 
 
+```javascript
 /* =================================================
    텍스트 드래그
+   윤곽선 기능과 충돌하지 않도록 수정
 ================================================= */
 
-let textDragging =
-    false;
+let textDragging = false;
 
-let textOffsetX =
-    0;
+let textOffsetX = 0;
 
-let textOffsetY =
-    0;
+let textOffsetY = 0;
 
+
+/* ==========================================
+   텍스트를 마우스로 누름
+========================================== */
 
 textPreview.addEventListener(
     "mousedown",
     function(event) {
 
-        textDragging =
-            true;
+        textDragging = true;
 
 
         const rect =
@@ -2167,6 +2181,11 @@ textPreview.addEventListener(
 );
 
 
+
+/* ==========================================
+   텍스트를 움직이는 중
+========================================== */
+
 document.addEventListener(
     "mousemove",
     function(event) {
@@ -2174,6 +2193,102 @@ document.addEventListener(
         if (!textDragging) {
             return;
         }
+
+
+        const editorRect =
+            editor.getBoundingClientRect();
+
+
+        let x =
+            event.clientX -
+            editorRect.left -
+            textOffsetX;
+
+
+        let y =
+            event.clientY -
+            editorRect.top -
+            textOffsetY;
+
+
+        /*
+         * 텍스트가 편집 영역 밖으로
+         * 너무 멀리 나가지 않도록 제한
+         */
+
+        const textWidth =
+            textPreview.offsetWidth;
+
+
+        const textHeight =
+            textPreview.offsetHeight;
+
+
+        x =
+            Math.max(
+                0,
+                Math.min(
+                    x,
+                    editor.clientWidth -
+                    textWidth
+                )
+            );
+
+
+        y =
+            Math.max(
+                0,
+                Math.min(
+                    y,
+                    editor.clientHeight -
+                    textHeight
+                )
+            );
+
+
+        /*
+         * 텍스트 위치
+         */
+
+        textPreview.style.left =
+            x + "px";
+
+
+        textPreview.style.top =
+            y + "px";
+
+
+        /*
+         * 중요
+         *
+         * 윤곽선 기능을 사용해도
+         * 글자 회전이 유지되도록 함
+         */
+
+        textPreview.style.transform =
+            "rotate(" +
+            rotation.value +
+            "deg)";
+
+    }
+);
+
+
+
+/* ==========================================
+   마우스를 놓음
+========================================== */
+
+document.addEventListener(
+    "mouseup",
+    function() {
+
+        textDragging = false;
+
+    }
+);
+```
+
 
 
         const editorRect =
