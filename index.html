@@ -192,19 +192,7 @@ header p {
    이모지 편집창
 ================================= */
 
-#iconControlBox {
-    display: none;
 
-    margin-top: 15px;
-
-    padding: 15px;
-
-    background: #f7f7f7;
-
-    border: 1px solid #ddd;
-
-    border-radius: 8px;
-}
 
 .icon-value {
     font-weight: bold;
@@ -385,7 +373,69 @@ header p {
 
 }
 ```
+#iconControlBox {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 15px;
+    width: 190px;
+    padding: 15px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    z-index: 100;
+    text-align: left;
+}
 
+#iconControlBox h3 {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+}
+
+.icon-control-item {
+    margin-bottom: 15px;
+}
+
+.icon-control-item label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+#iconSize,
+#iconRotation {
+    width: 100%;
+}
+
+#iconSizeValue,
+#iconRotationValue {
+    font-weight: bold;
+}
+
+#deleteIconButton {
+    width: 100%;
+    padding: 9px;
+    border: none;
+    border-radius: 6px;
+    background-color: #d33;
+    color: white;
+    cursor: pointer;
+}
+
+#deleteIconButton:hover {
+    background-color: #b22;
+}
+
+.added-icon.selected {
+    outline: 2px dashed #333;
+    outline-offset: 3px;
+}
+
+.preview-area {
+    position: relative;
+}
 </style>
 
 </head>
@@ -875,6 +925,54 @@ header p {
         <br>
         여기에 미리보기가 나타납니다.
 
+        <div id="iconControlBox">
+
+    <h3>이모지 편집</h3>
+
+    <div class="icon-control-item">
+
+        <label>
+            이모지 크기
+            <span id="iconSizeValue">70px</span>
+        </label>
+
+        <input
+            type="range"
+            id="iconSize"
+            min="20"
+            max="300"
+            value="70"
+        >
+
+    </div>
+
+
+    <div class="icon-control-item">
+
+        <label>
+            이모지 회전
+            <span id="iconRotationValue">0°</span>
+        </label>
+
+        <input
+            type="range"
+            id="iconRotation"
+            min="-180"
+            max="180"
+            value="0"
+        >
+
+    </div>
+
+
+    <button
+        type="button"
+        id="deleteIconButton"
+    >
+        🗑 선택한 이모지 삭제
+    </button>
+
+</div>
     </div>
 
 
@@ -1456,6 +1554,8 @@ async function addIcon(fileName) {
                 icon.className =
                     "added-icon";
 
+                icon.dataset.rotation =
+                    "0";
 
                 icon.style.width =
                     "70px";
@@ -2481,7 +2581,227 @@ textPreview.style.fontSize =
 textPreview.style.color =
     textColor.value;
 
+let selectedIcon = null;
 
+
+/* 이모지를 클릭했을 때 */
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target.classList.contains(
+                "added-icon"
+            )
+        ) {
+
+            selectIcon(
+                event.target
+            );
+
+        }
+
+    }
+);
+
+
+/* 이모지 선택 */
+
+function selectIcon(icon) {
+
+    if (selectedIcon) {
+
+        selectedIcon.classList.remove(
+            "selected"
+        );
+
+    }
+
+
+    selectedIcon =
+        icon;
+
+
+    selectedIcon.classList.add(
+        "selected"
+    );
+
+
+    /* 현재 크기 */
+
+    const size =
+        parseInt(
+            selectedIcon.style.width
+        ) || 70;
+
+
+    document.getElementById(
+        "iconSize"
+    ).value =
+        size;
+
+
+    document.getElementById(
+        "iconSizeValue"
+    ).textContent =
+        size + "px";
+
+
+    /* 현재 회전 */
+
+    const angle =
+        Number(
+            selectedIcon.dataset.rotation
+        ) || 0;
+
+
+    document.getElementById(
+        "iconRotation"
+    ).value =
+        angle;
+
+
+    document.getElementById(
+        "iconRotationValue"
+    ).textContent =
+        angle + "°";
+
+
+    /* 오른쪽 편집창 표시 */
+
+    document.getElementById(
+        "iconControlBox"
+    ).style.display =
+        "block";
+
+}
+
+
+/* 크기 조절 */
+
+document.getElementById(
+    "iconSize"
+).addEventListener(
+    "input",
+    function() {
+
+        if (!selectedIcon) {
+            return;
+        }
+
+
+        const size =
+            Number(this.value);
+
+
+        selectedIcon.style.width =
+            size + "px";
+
+
+        selectedIcon.style.height =
+            size + "px";
+
+
+        document.getElementById(
+            "iconSizeValue"
+        ).textContent =
+            size + "px";
+
+    }
+);
+
+
+/* 회전 */
+
+document.getElementById(
+    "iconRotation"
+).addEventListener(
+    "input",
+    function() {
+
+        if (!selectedIcon) {
+            return;
+        }
+
+
+        const angle =
+            Number(this.value);
+
+
+        selectedIcon.dataset.rotation =
+            angle;
+
+
+        selectedIcon.style.transform =
+            "rotate(" +
+            angle +
+            "deg)";
+
+
+        document.getElementById(
+            "iconRotationValue"
+        ).textContent =
+            angle + "°";
+
+    }
+);
+
+
+/* 삭제 */
+
+document.getElementById(
+    "deleteIconButton"
+).addEventListener(
+    "click",
+    function() {
+
+        if (!selectedIcon) {
+            return;
+        }
+
+
+        selectedIcon.remove();
+
+
+        selectedIcon =
+            null;
+
+
+        document.getElementById(
+            "iconControlBox"
+        ).style.display =
+            "none";
+
+    }
+);
+
+
+/* 키보드 Delete */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Delete" &&
+            selectedIcon
+        ) {
+
+            selectedIcon.remove();
+
+            selectedIcon =
+                null;
+
+            document.getElementById(
+                "iconControlBox"
+            ).style.display =
+                "none";
+
+        }
+
+    }
+);
 </script>
 
 </body>
