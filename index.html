@@ -23,14 +23,9 @@
 }
 
 body {
-
     margin: 0;
-
-    font-family:
-        Arial,
-        sans-serif;
-
-    background-color: #f2f2f2;
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
 }
 
 
@@ -39,28 +34,17 @@ body {
 ===================================== */
 
 header {
-
-    background-color: white;
-
+    background: white;
     padding: 20px;
-
     text-align: center;
-
-    border-bottom:
-        1px solid #ddd;
+    border-bottom: 1px solid #ddd;
 }
 
 header h1 {
-
     margin: 0;
-
-    font-size: 28px;
 }
 
 header p {
-
-    margin: 8px 0 0;
-
     color: #777;
 }
 
@@ -70,28 +54,23 @@ header p {
 ===================================== */
 
 .container {
-
     width: 90%;
-
     max-width: 1100px;
-
     margin: 40px auto;
 
     display: flex;
-
     gap: 30px;
 }
 
 
 /* =====================================
-   왼쪽 설정
+   설정 패널
 ===================================== */
 
 .control-panel {
-
     width: 300px;
 
-    background-color: white;
+    background: white;
 
     padding: 25px;
 
@@ -102,23 +81,16 @@ header p {
         rgba(0,0,0,0.08);
 }
 
-.control-panel h2 {
-
-    margin-top: 0;
-}
-
 
 /* =====================================
    설정
 ===================================== */
 
 .setting {
-
     margin-top: 20px;
 }
 
 .setting label {
-
     display: block;
 
     margin-bottom: 7px;
@@ -133,12 +105,9 @@ header p {
 
     padding: 9px;
 
-    border:
-        1px solid #ccc;
+    border: 1px solid #ccc;
 
     border-radius: 6px;
-
-    font-size: 15px;
 }
 
 .setting input[type="color"] {
@@ -148,9 +117,14 @@ header p {
     height: 40px;
 }
 
+.setting input[type="range"] {
+
+    width: 100%;
+}
+
 
 /* =====================================
-   업로드
+   이미지 업로드
 ===================================== */
 
 .upload-button {
@@ -161,7 +135,7 @@ header p {
 
     padding: 15px;
 
-    background-color: #333;
+    background: #333;
 
     color: white;
 
@@ -170,13 +144,11 @@ header p {
     border-radius: 8px;
 
     cursor: pointer;
-
-    font-size: 16px;
 }
 
 .upload-button:hover {
 
-    background-color: #555;
+    background: #555;
 }
 
 #imageInput {
@@ -186,13 +158,11 @@ header p {
 
 .help-text {
 
-    margin-top: 12px;
+    margin-top: 10px;
 
     font-size: 13px;
 
     color: #777;
-
-    line-height: 1.5;
 }
 
 
@@ -202,31 +172,20 @@ header p {
 
 #errorMessage {
 
-    margin-top: 15px;
-
-    color: #d00000;
-
-    font-size: 14px;
-
     display: none;
+
+    margin-top: 10px;
+
+    color: red;
 }
 
 
 /* =====================================
-   슬라이더
+   버튼
 ===================================== */
 
-.range-input {
-
-    width: 100%;
-}
-
-
-/* =====================================
-   아이콘 버튼
-===================================== */
-
-.icon-toggle {
+.icon-toggle,
+.save-button {
 
     width: 100%;
 
@@ -236,7 +195,7 @@ header p {
 
     border-radius: 7px;
 
-    background-color: #333;
+    background: #333;
 
     color: white;
 
@@ -245,14 +204,15 @@ header p {
     font-size: 15px;
 }
 
-.icon-toggle:hover {
+.icon-toggle:hover,
+.save-button:hover {
 
-    background-color: #555;
+    background: #555;
 }
 
 
 /* =====================================
-   아이콘 선택창
+   이모지 선택 패널
 ===================================== */
 
 .icon-panel {
@@ -263,7 +223,7 @@ header p {
 
     padding: 10px;
 
-    background-color: #f5f5f5;
+    background: #f5f5f5;
 
     border-radius: 8px;
 }
@@ -274,25 +234,22 @@ header p {
 
     justify-content: center;
 
-    align-items: center;
-
-    gap: 6px;
+    gap: 5px;
 
     flex-wrap: wrap;
 }
 
 .icon-button {
 
-    width: 50px;
+    width: 48px;
 
-    height: 50px;
+    height: 48px;
 
     padding: 3px;
 
-    border:
-        1px solid #ddd;
+    border: 1px solid #ddd;
 
-    background-color: white;
+    background: white;
 
     border-radius: 6px;
 
@@ -317,14 +274,104 @@ header p {
 
 
 /* =====================================
-   편집 영역
+   추가된 모든 이모지
+===================================== */
+
+.added-icon,
+.text-emoji {
+
+    position: absolute;
+
+    width: 70px;
+
+    height: 70px;
+
+    object-fit: contain;
+
+    cursor: move;
+
+    user-select: none;
+
+    touch-action: none;
+
+    z-index: 20;
+
+    transform-origin: center center;
+}
+
+
+/* =====================================
+   선택된 이모지
+===================================== */
+
+.added-icon.selected,
+.text-emoji.selected {
+
+    outline:
+        2px dashed #333;
+
+    outline-offset: 3px;
+}
+
+
+/* =====================================
+   이모지 조절창
+===================================== */
+
+#iconControlBox {
+
+    display: none;
+
+    margin-top: 15px;
+
+    padding: 15px;
+
+    background: #f7f7f7;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+}
+
+.icon-value {
+
+    font-weight: bold;
+}
+
+.delete-icon-button {
+
+    width: 100%;
+
+    margin-top: 12px;
+
+    padding: 10px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #d33;
+
+    color: white;
+
+    cursor: pointer;
+}
+
+.delete-icon-button:hover {
+
+    background: #b22;
+}
+
+
+/* =====================================
+   미리보기
 ===================================== */
 
 .preview-area {
 
     flex: 1;
 
-    background-color: white;
+    background: white;
 
     padding: 25px;
 
@@ -335,13 +382,23 @@ header p {
         rgba(0,0,0,0.08);
 
     text-align: center;
+
+    position: sticky;
+
+    top: 20px;
+
+    align-self: flex-start;
+
+    max-height:
+        calc(100vh - 40px);
+
+    overflow-y: auto;
 }
 
-.preview-area h2 {
 
-    margin-top: 0;
-}
-
+/* =====================================
+   편집 영역
+===================================== */
 
 #editor {
 
@@ -358,7 +415,7 @@ header p {
 
 
 /* =====================================
-   이미지
+   업로드 이미지
 ===================================== */
 
 #imagePreview {
@@ -391,8 +448,7 @@ header p {
 
     color: #999;
 
-    border:
-        2px dashed #ccc;
+    border: 2px dashed #ccc;
 
     border-radius: 10px;
 
@@ -414,10 +470,6 @@ header p {
 
     top: 50%;
 
-    transform:
-        translate(-50%, -50%)
-        rotate(0deg);
-
     color: white;
 
     font-size: 40px;
@@ -433,90 +485,10 @@ header p {
     z-index: 10;
 
     line-height: normal;
-}
-
-
-/* =====================================
-   추가 이미지
-===================================== */
-
-.added-icon {
-
-    position: absolute;
-
-    width: 70px;
-
-    height: 70px;
-
-    object-fit: contain;
-
-    cursor: move;
-
-    user-select: none;
-
-    touch-action: none;
-
-    z-index: 20;
-
-    line-height: normal;
-}
-
-
-/* =====================================
-   글자 이모지
-===================================== */
-
-.text-emoji {
-
-    position: absolute;
-
-    width: 100px;
-
-    height: 100px;
-
-    object-fit: contain;
-
-    cursor: move;
-
-    user-select: none;
-
-    touch-action: none;
-
-    z-index: 30;
 
     transform:
+        translate(-50%, -50%)
         rotate(0deg);
-
-    transform-origin: center center;
-}
-
-
-/* =====================================
-   저장
-===================================== */
-
-.save-button {
-
-    width: 100%;
-
-    margin-top: 10px;
-
-    padding: 11px;
-
-    border: none;
-
-    border-radius: 7px;
-
-    background-color: #333;
-
-    color: white;
-
-    cursor: pointer;
-}
-
-.save-button:hover {
-
-    background-color: #555;
 }
 
 
@@ -538,12 +510,19 @@ header p {
 
     .preview-area {
 
+        position: static;
+
+        max-height: none;
+
+        overflow: visible;
+
         width: 100%;
     }
 
 }
 
 </style>
+
 
 </head>
 
@@ -576,7 +555,7 @@ header p {
     <h2>설정</h2>
 
 
-    <!-- 이미지 선택 -->
+    <!-- 이미지 업로드 -->
 
     <label
         for="imageInput"
@@ -611,7 +590,7 @@ header p {
 
     <div class="setting">
 
-        <label for="textInput">
+        <label>
             텍스트
         </label>
 
@@ -628,7 +607,7 @@ header p {
 
     <div class="setting">
 
-        <label for="fontSize">
+        <label>
             글자 크기
         </label>
 
@@ -647,7 +626,7 @@ header p {
 
     <div class="setting">
 
-        <label for="textColor">
+        <label>
             글자 색
         </label>
 
@@ -661,12 +640,12 @@ header p {
 
 
     <!-- =================================
-         글자 윤곽선
+         윤곽선 색
     ================================== -->
 
     <div class="setting">
 
-        <label for="outlineColor">
+        <label>
             글자 윤곽선 색
         </label>
 
@@ -678,9 +657,12 @@ header p {
     </div>
 
 
+
+    <!-- 윤곽선 굵기 -->
+
     <div class="setting">
 
-        <label for="outlineWidth">
+        <label>
 
             윤곽선 굵기
 
@@ -693,7 +675,6 @@ header p {
         <input
             type="range"
             id="outlineWidth"
-            class="range-input"
             min="0"
             max="20"
             value="3">
@@ -708,7 +689,7 @@ header p {
 
     <div class="setting">
 
-        <label for="rotation">
+        <label>
 
             글자 회전
 
@@ -721,7 +702,6 @@ header p {
         <input
             type="range"
             id="rotation"
-            class="range-input"
             min="-180"
             max="180"
             value="0">
@@ -731,24 +711,24 @@ header p {
 
 
     <!-- =================================
-         ⭐ 별
+         별
     ================================== -->
 
     <div class="setting">
 
         <button
             type="button"
-            id="starToggle"
-            class="icon-toggle">
+            class="icon-toggle"
+            id="starToggle">
 
-            ⭐ 별 추가
+            ⭐ 별 이모지 추가
 
         </button>
 
 
         <div
-            id="starPanel"
-            class="icon-panel">
+            class="icon-panel"
+            id="starPanel">
 
             <div class="icon-list">
 
@@ -812,6 +792,7 @@ header p {
 
                 </button>
 
+
             </div>
 
         </div>
@@ -821,24 +802,24 @@ header p {
 
 
     <!-- =================================
-         ❤️ 하트
+         하트
     ================================== -->
 
     <div class="setting">
 
         <button
             type="button"
-            id="heartToggle"
-            class="icon-toggle">
+            class="icon-toggle"
+            id="heartToggle">
 
-            ❤️ 하트 추가
+            ❤️ 하트 이모지 추가
 
         </button>
 
 
         <div
-            id="heartPanel"
-            class="icon-panel">
+            class="icon-panel"
+            id="heartPanel">
 
             <div class="icon-list">
 
@@ -902,6 +883,7 @@ header p {
 
                 </button>
 
+
             </div>
 
         </div>
@@ -911,15 +893,15 @@ header p {
 
 
     <!-- =================================
-         📝 글자 이모지
+         글자 이모지
     ================================== -->
 
     <div class="setting">
 
         <button
             type="button"
-            id="textEmojiToggle"
-            class="icon-toggle">
+            class="icon-toggle"
+            id="textEmojiToggle">
 
             📝 글자 이모지 추가
 
@@ -927,14 +909,11 @@ header p {
 
 
         <div
-            id="textEmojiPanel"
-            class="icon-panel">
-
+            class="icon-panel"
+            id="textEmojiPanel">
 
             <div class="icon-list">
 
-
-                <!-- 굿 -->
 
                 <button
                     type="button"
@@ -948,8 +927,6 @@ header p {
                 </button>
 
 
-                <!-- 신 -->
-
                 <button
                     type="button"
                     class="icon-button"
@@ -961,8 +938,6 @@ header p {
 
                 </button>
 
-
-                <!-- 천재 -->
 
                 <button
                     type="button"
@@ -976,8 +951,6 @@ header p {
                 </button>
 
 
-                <!-- 최고 -->
-
                 <button
                     type="button"
                     class="icon-button"
@@ -989,8 +962,6 @@ header p {
 
                 </button>
 
-
-                <!-- 최애 -->
 
                 <button
                     type="button"
@@ -1013,56 +984,81 @@ header p {
 
 
     <!-- =================================
-         글자 이모지 크기
+         선택한 이모지 조절
     ================================== -->
 
-    <div class="setting">
+    <div
+        id="iconControlBox">
 
-        <label for="emojiSize">
+
+        <!-- 크기 -->
+
+        <label>
 
             선택한 이모지 크기
 
-            <span id="emojiSizeValue">
-                100px
+            <span
+                class="icon-value"
+                id="iconSizeValue">
+
+                70px
+
             </span>
 
         </label>
 
+
         <input
             type="range"
-            id="emojiSize"
-            class="range-input"
-            min="30"
+            id="iconSize"
+            min="20"
             max="300"
-            value="100">
-
-    </div>
+            value="70">
 
 
 
-    <!-- =================================
-         글자 이모지 회전
-    ================================== -->
+        <!-- 회전 -->
 
-    <div class="setting">
+        <div
+            style="margin-top:15px;">
 
-        <label for="emojiRotation">
+            <label>
 
-            선택한 이모지 회전
+                선택한 이모지 회전
 
-            <span id="emojiRotationValue">
-                0°
-            </span>
+                <span
+                    class="icon-value"
+                    id="iconRotationValue">
 
-        </label>
+                    0°
 
-        <input
-            type="range"
-            id="emojiRotation"
-            class="range-input"
-            min="-180"
-            max="180"
-            value="0">
+                </span>
+
+            </label>
+
+
+            <input
+                type="range"
+                id="iconRotation"
+                min="-180"
+                max="180"
+                value="0">
+
+        </div>
+
+
+
+        <!-- 삭제 -->
+
+        <button
+            type="button"
+            class="delete-icon-button"
+            id="deleteIconButton">
+
+            🗑 선택한 이모지 삭제
+
+        </button>
+
 
     </div>
 
@@ -1218,6 +1214,14 @@ const editor =
 
 
 /* =====================================
+   현재 선택한 이모지
+===================================== */
+
+let selectedIcon = null;
+
+
+
+/* =====================================
    이미지 업로드
 ===================================== */
 
@@ -1233,6 +1237,7 @@ imageInput.addEventListener(
 
         const file =
             imageInput.files[0];
+
 
         if (!file) {
 
@@ -1307,7 +1312,7 @@ imageInput.addEventListener(
 
 
 /* =====================================
-   텍스트
+   일반 텍스트
 ===================================== */
 
 textInput.addEventListener(
@@ -1395,122 +1400,102 @@ outlineWidth.addEventListener(
 
 
 /* =====================================
-   글자 회전
+   일반 텍스트 회전
 ===================================== */
 
 rotation.addEventListener(
     "input",
     function() {
 
-        const value =
-            rotation.value;
-
-
         rotationValue.textContent =
-            value + "°";
+            rotation.value + "°";
 
 
-        updateTextTransform();
+        textPreview.style.transform =
+            "translate(-50%, -50%) rotate(" +
+            rotation.value +
+            "deg)";
 
     }
 );
 
 
-function updateTextTransform() {
 
-    textPreview.style.transform =
-        "translate(-50%, -50%) rotate(" +
-        rotation.value +
-        "deg)";
+/* =====================================
+   패널 열기
+===================================== */
+
+function togglePanel(
+    panel
+) {
+
+    if (
+        panel.style.display ===
+        "block"
+    ) {
+
+        panel.style.display =
+            "none";
+
+    } else {
+
+        panel.style.display =
+            "block";
+
+    }
 
 }
 
 
-
-/* =====================================
-   별 패널
-===================================== */
-
-const starToggle =
-    document.getElementById(
-        "starToggle"
-    );
-
-const starPanel =
-    document.getElementById(
-        "starPanel"
-    );
-
-
-starToggle.addEventListener(
+document
+.getElementById(
+    "starToggle"
+)
+.addEventListener(
     "click",
     function() {
 
-        starPanel.style.display =
-            starPanel.style.display ===
-            "block"
-                ? "none"
-                : "block";
+        togglePanel(
+            document.getElementById(
+                "starPanel"
+            )
+        );
 
     }
 );
 
 
-
-/* =====================================
-   하트 패널
-===================================== */
-
-const heartToggle =
-    document.getElementById(
-        "heartToggle"
-    );
-
-const heartPanel =
-    document.getElementById(
-        "heartPanel"
-    );
-
-
-heartToggle.addEventListener(
+document
+.getElementById(
+    "heartToggle"
+)
+.addEventListener(
     "click",
     function() {
 
-        heartPanel.style.display =
-            heartPanel.style.display ===
-            "block"
-                ? "none"
-                : "block";
+        togglePanel(
+            document.getElementById(
+                "heartPanel"
+            )
+        );
 
     }
 );
 
 
-
-/* =====================================
-   글자 이모지 패널
-===================================== */
-
-const textEmojiToggle =
-    document.getElementById(
-        "textEmojiToggle"
-    );
-
-const textEmojiPanel =
-    document.getElementById(
-        "textEmojiPanel"
-    );
-
-
-textEmojiToggle.addEventListener(
+document
+.getElementById(
+    "textEmojiToggle"
+)
+.addEventListener(
     "click",
     function() {
 
-        textEmojiPanel.style.display =
-            textEmojiPanel.style.display ===
-            "block"
-                ? "none"
-                : "block";
+        togglePanel(
+            document.getElementById(
+                "textEmojiPanel"
+            )
+        );
 
     }
 );
@@ -1519,6 +1504,8 @@ textEmojiToggle.addEventListener(
 
 /* =====================================
    검정 배경 제거
+   -------------------------------------
+   가장자리와 연결된 검정색만 제거
 ===================================== */
 
 function removeBlackBackground(
@@ -1532,6 +1519,7 @@ function removeBlackBackground(
                 document.createElement(
                     "canvas"
                 );
+
 
             const ctx =
                 canvas.getContext(
@@ -1589,6 +1577,13 @@ function removeBlackBackground(
                 canvas.height;
 
 
+            /*
+             * 검정색 판정
+             *
+             * 완전한 검정뿐만 아니라
+             * 아주 어두운 검정까지 처리
+             */
+
             function isBlack(
                 x,
                 y
@@ -1613,21 +1608,36 @@ function removeBlackBackground(
                     data[index + 3];
 
 
+                if (
+                    a === 0
+                ) {
+
+                    return false;
+                }
+
+
                 return (
-                    a !== 0 &&
-                    r <= 20 &&
-                    g <= 20 &&
-                    b <= 20
+                    r <= 35 &&
+                    g <= 35 &&
+                    b <= 35
                 );
 
             }
 
+
+            /*
+             * 방문 여부
+             */
 
             const visited =
                 new Uint8Array(
                     width * height
                 );
 
+
+            /*
+             * BFS 큐
+             */
 
             const queue = [];
 
@@ -1661,7 +1671,10 @@ function removeBlackBackground(
 
 
                 if (
-                    !isBlack(x, y)
+                    !isBlack(
+                        x,
+                        y
+                    )
                 ) {
 
                     return;
@@ -1678,6 +1691,11 @@ function removeBlackBackground(
 
             }
 
+
+            /*
+             * 이미지 가장자리에서
+             * 시작되는 검정색 찾기
+             */
 
             for (
                 let x = 0;
@@ -1717,16 +1735,23 @@ function removeBlackBackground(
             }
 
 
-            let index = 0;
+            /*
+             * 연결된 검정 영역을
+             * 투명하게 만들기
+             */
+
+            let queueIndex = 0;
 
 
             while (
-                index <
+                queueIndex <
                 queue.length
             ) {
 
                 const point =
-                    queue[index++];
+                    queue[
+                        queueIndex++
+                    ];
 
 
                 const x =
@@ -1742,25 +1767,48 @@ function removeBlackBackground(
                     ) * 4;
 
 
+                /*
+                 * 투명 처리
+                 */
+
                 data[
                     pixelIndex + 3
                 ] = 0;
 
+
+                /*
+                 * 상
+                 */
 
                 addIfBlack(
                     x,
                     y - 1
                 );
 
+
+                /*
+                 * 하
+                 */
+
                 addIfBlack(
                     x,
                     y + 1
                 );
 
+
+                /*
+                 * 좌
+                 */
+
                 addIfBlack(
                     x - 1,
                     y
                 );
+
+
+                /*
+                 * 우
+                 */
 
                 addIfBlack(
                     x + 1,
@@ -1776,6 +1824,10 @@ function removeBlackBackground(
                 0
             );
 
+
+            /*
+             * 투명 PNG로 변환
+             */
 
             const result =
                 new Image();
@@ -1796,7 +1848,7 @@ function removeBlackBackground(
 
                     reject(
                         new Error(
-                            "이미지 처리 실패"
+                            "투명 이미지 생성 실패"
                         )
                     );
 
@@ -1816,10 +1868,13 @@ function removeBlackBackground(
 
 
 /* =====================================
-   이미지 아이콘 추가
+   이모지 추가
+   -------------------------------------
+   별 / 하트 / 글자 이모지를
+   모두 같은 방식으로 처리
 ===================================== */
 
-async function addIcon(
+async function addEmoji(
     fileName
 ) {
 
@@ -1832,55 +1887,116 @@ async function addIcon(
 
             try {
 
-                const cleanIcon =
+                /*
+                 * 모든 이모지에
+                 * 검정 배경 제거 적용
+                 */
+
+                const cleanImage =
                     await removeBlackBackground(
                         original
                     );
 
 
-                const icon =
+                const emoji =
                     document.createElement(
                         "img"
                     );
 
 
-                icon.src =
-                    cleanIcon.src;
+                emoji.src =
+                    cleanImage.src;
 
 
-                icon.className =
+                /*
+                 * 별 / 하트 / 글자
+                 * 모두 같은 클래스 사용
+                 */
+
+                emoji.className =
                     "added-icon";
 
 
-                icon.style.left =
+                /*
+                 * 기본 크기
+                 */
+
+                const size =
+                    70;
+
+
+                emoji.style.width =
+                    size + "px";
+
+                emoji.style.height =
+                    size + "px";
+
+
+                /*
+                 * 중앙에 배치
+                 */
+
+                emoji.style.left =
                     (
                         editor.clientWidth /
-                        2 - 35
+                        2 -
+                        size / 2
                     ) + "px";
 
 
-                icon.style.top =
+                emoji.style.top =
                     (
                         editor.clientHeight /
-                        2 - 35
+                        2 -
+                        size / 2
                     ) + "px";
 
 
+                /*
+                 * 기본 회전
+                 */
+
+                emoji.style.transform =
+                    "rotate(0deg)";
+
+
+                /*
+                 * 편집 영역에 추가
+                 */
+
                 editor.appendChild(
-                    icon
+                    emoji
                 );
 
+
+                /*
+                 * 드래그 및 선택 기능
+                 */
 
                 makeDraggable(
-                    icon
+                    emoji
                 );
+
+
+                /*
+                 * 방금 추가한 이모지를
+                 * 자동 선택
+                 */
+
+                selectIcon(
+                    emoji
+                );
+
 
             } catch(error) {
 
-                console.error(error);
+                console.error(
+                    error
+                );
+
 
                 alert(
-                    "이미지를 추가하는 중 오류가 발생했습니다."
+                    "이모지를 추가하는 중 오류가 발생했습니다."
                 );
 
             }
@@ -1923,7 +2039,7 @@ document
             "click",
             function() {
 
-                addIcon(
+                addEmoji(
                     button.dataset.icon
                 );
 
@@ -1950,7 +2066,7 @@ document
             "click",
             function() {
 
-                addIcon(
+                addEmoji(
                     button.dataset.heart
                 );
 
@@ -1963,11 +2079,8 @@ document
 
 
 /* =====================================
-   ⭐ 글자 이모지 추가
+   글자 이모지 추가
 ===================================== */
-
-let selectedEmoji = null;
-
 
 document
 .querySelectorAll(
@@ -1980,7 +2093,14 @@ document
             "click",
             function() {
 
-                addTextEmoji(
+                /*
+                 * 이제 글자 이모지도
+                 * addEmoji()를 사용
+                 *
+                 * 따라서 검정 배경 제거됨
+                 */
+
+                addEmoji(
                     button.dataset.textEmoji
                 );
 
@@ -1993,78 +2113,107 @@ document
 
 
 /* =====================================
-   글자 이모지 생성
+   이모지 선택
 ===================================== */
 
-function addTextEmoji(
-    fileName
+function selectIcon(
+    element
 ) {
 
-    const emoji =
-        document.createElement(
-            "img"
+    /*
+     * 기존 선택 제거
+     */
+
+    document
+    .querySelectorAll(
+        ".added-icon.selected"
+    )
+    .forEach(
+        function(item) {
+
+            item.classList.remove(
+                "selected"
+            );
+
+        }
+    );
+
+
+    /*
+     * 새 선택
+     */
+
+    selectedIcon =
+        element;
+
+
+    selectedIcon.classList.add(
+        "selected"
+    );
+
+
+    /*
+     * 조절창 표시
+     */
+
+    document
+    .getElementById(
+        "iconControlBox"
+    )
+    .style.display =
+        "block";
+
+
+    /*
+     * 현재 크기 읽기
+     */
+
+    const size =
+        selectedIcon.offsetWidth;
+
+
+    document
+    .getElementById(
+        "iconSize"
+    )
+    .value =
+        Math.round(size);
+
+
+    document
+    .getElementById(
+        "iconSizeValue"
+    )
+    .textContent =
+        Math.round(size) +
+        "px";
+
+
+    /*
+     * 현재 회전값 읽기
+     */
+
+    const angle =
+        getRotation(
+            selectedIcon
         );
 
 
-    emoji.src =
-        fileName +
-        "?v=" +
-        Date.now();
+    document
+    .getElementById(
+        "iconRotation"
+    )
+    .value =
+        angle;
 
 
-    emoji.className =
-        "text-emoji";
-
-
-    emoji.style.width =
-        emojiSize.value +
-        "px";
-
-
-    emoji.style.height =
-        emojiSize.value +
-        "px";
-
-
-    emoji.style.left =
-        (
-            editor.clientWidth /
-            2 -
-            Number(emojiSize.value) /
-            2
-        ) + "px";
-
-
-    emoji.style.top =
-        (
-            editor.clientHeight /
-            2 -
-            Number(emojiSize.value) /
-            2
-        ) + "px";
-
-
-    emoji.style.transform =
-        "rotate(" +
-        emojiRotation.value +
-        "deg)";
-
-
-    editor.appendChild(
-        emoji
-    );
-
-
-    makeDraggable(
-        emoji
-    );
-
-
-    /* 새로 추가한 이모지를
-       현재 선택된 이모지로 지정 */
-
-    selectedEmoji =
-        emoji;
+    document
+    .getElementById(
+        "iconRotationValue"
+    )
+    .textContent =
+        angle +
+        "°";
 
 }
 
@@ -2072,42 +2221,49 @@ function addTextEmoji(
 
 /* =====================================
    이모지 크기
+   -------------------------------------
+   별 / 하트 / 글자 모두 적용
 ===================================== */
 
-const emojiSize =
+const iconSize =
     document.getElementById(
-        "emojiSize"
+        "iconSize"
     );
 
-const emojiSizeValue =
+const iconSizeValue =
     document.getElementById(
-        "emojiSizeValue"
+        "iconSizeValue"
     );
 
 
-emojiSize.addEventListener(
+iconSize.addEventListener(
     "input",
     function() {
 
+        if (
+            !selectedIcon
+        ) {
+
+            return;
+        }
+
+
         const value =
-            emojiSize.value;
+            Number(
+                iconSize.value
+            );
 
 
-        emojiSizeValue.textContent =
+        selectedIcon.style.width =
             value + "px";
 
 
-        if (
-            selectedEmoji
-        ) {
+        selectedIcon.style.height =
+            value + "px";
 
-            selectedEmoji.style.width =
-                value + "px";
 
-            selectedEmoji.style.height =
-                value + "px";
-
-        }
+        iconSizeValue.textContent =
+            value + "px";
 
     }
 );
@@ -2116,41 +2272,48 @@ emojiSize.addEventListener(
 
 /* =====================================
    이모지 회전
+   -------------------------------------
+   별 / 하트 / 글자 모두 적용
 ===================================== */
 
-const emojiRotation =
+const iconRotation =
     document.getElementById(
-        "emojiRotation"
+        "iconRotation"
     );
 
-const emojiRotationValue =
+const iconRotationValue =
     document.getElementById(
-        "emojiRotationValue"
+        "iconRotationValue"
     );
 
 
-emojiRotation.addEventListener(
+iconRotation.addEventListener(
     "input",
     function() {
 
-        const value =
-            emojiRotation.value;
-
-
-        emojiRotationValue.textContent =
-            value + "°";
-
-
         if (
-            selectedEmoji
+            !selectedIcon
         ) {
 
-            selectedEmoji.style.transform =
-                "rotate(" +
-                value +
-                "deg)";
-
+            return;
         }
+
+
+        const value =
+            Number(
+                iconRotation.value
+            );
+
+
+        selectedIcon.style.transform =
+            "rotate(" +
+            value +
+            "deg)";
+
+
+        iconRotationValue.textContent =
+            value +
+            "°";
 
     }
 );
@@ -2158,71 +2321,79 @@ emojiRotation.addEventListener(
 
 
 /* =====================================
-   드래그
+   이모지 삭제
+===================================== */
+
+document
+.getElementById(
+    "deleteIconButton"
+)
+.addEventListener(
+    "click",
+    function() {
+
+        if (
+            !selectedIcon
+        ) {
+
+            return;
+        }
+
+
+        selectedIcon.remove();
+
+
+        selectedIcon =
+            null;
+
+
+        document
+        .getElementById(
+            "iconControlBox"
+        )
+        .style.display =
+            "none";
+
+    }
+);
+
+
+
+/* =====================================
+   이모지 드래그
 ===================================== */
 
 function makeDraggable(
     element
 ) {
 
-    let dragging = false;
+    let dragging =
+        false;
 
-    let offsetX = 0;
 
-    let offsetY = 0;
+    let offsetX =
+        0;
+
+
+    let offsetY =
+        0;
 
 
     element.addEventListener(
         "mousedown",
         function(event) {
 
-            dragging = true;
+            /*
+             * 먼저 이모지 선택
+             */
+
+            selectIcon(
+                element
+            );
 
 
-            /* 클릭한 이모지를
-               현재 선택 상태로 변경 */
-
-            if (
-                element.classList.contains(
-                    "text-emoji"
-                )
-            ) {
-
-                selectedEmoji =
-                    element;
-
-
-                const width =
-                    element.offsetWidth;
-
-
-                const rotationValueNow =
-                    getRotation(
-                        element
-                    );
-
-
-                emojiSize.value =
-                    Math.round(
-                        width
-                    );
-
-
-                emojiSizeValue.textContent =
-                    Math.round(
-                        width
-                    ) + "px";
-
-
-                emojiRotation.value =
-                    rotationValueNow;
-
-
-                emojiRotationValue.textContent =
-                    rotationValueNow +
-                    "°";
-
-            }
+            dragging =
+                true;
 
 
             const rect =
@@ -2249,7 +2420,9 @@ function makeDraggable(
         "mousemove",
         function(event) {
 
-            if (!dragging) {
+            if (
+                !dragging
+            ) {
 
                 return;
             }
@@ -2270,6 +2443,11 @@ function makeDraggable(
                 editorRect.top -
                 offsetY;
 
+
+            /*
+             * 편집 영역 밖으로
+             * 나가지 않도록 제한
+             */
 
             x =
                 Math.max(
@@ -2308,7 +2486,8 @@ function makeDraggable(
         "mouseup",
         function() {
 
-            dragging = false;
+            dragging =
+                false;
 
         }
     );
@@ -2318,7 +2497,7 @@ function makeDraggable(
 
 
 /* =====================================
-   회전값 가져오기
+   회전값 읽기
 ===================================== */
 
 function getRotation(
@@ -2332,6 +2511,7 @@ function getRotation(
 
 
     if (
+        !transform ||
         transform === "none"
     ) {
 
@@ -2351,6 +2531,7 @@ function getRotation(
             values[0]
         );
 
+
     const b =
         parseFloat(
             values[1]
@@ -2359,8 +2540,12 @@ function getRotation(
 
     let angle =
         Math.round(
-            Math.atan2(b, a) *
-            (180 / Math.PI)
+            Math.atan2(
+                b,
+                a
+            ) *
+            180 /
+            Math.PI
         );
 
 
@@ -2377,8 +2562,10 @@ function getRotation(
 let textDragging =
     false;
 
+
 let textOffsetX =
     0;
+
 
 let textOffsetY =
     0;
@@ -2470,7 +2657,7 @@ document.addEventListener(
 
 
 /* =====================================
-   저장
+   이미지 저장
 ===================================== */
 
 function saveImage(
@@ -2508,6 +2695,10 @@ function saveImage(
     canvas.height =
         imagePreview.naturalHeight;
 
+
+    /*
+     * 원본 이미지
+     */
 
     ctx.drawImage(
         imagePreview,
@@ -2600,6 +2791,10 @@ function saveImage(
             "middle";
 
 
+        /*
+         * 윤곽선
+         */
+
         ctx.lineWidth =
             Number(
                 outlineWidth.value
@@ -2616,6 +2811,10 @@ function saveImage(
             0
         );
 
+
+        /*
+         * 글자
+         */
 
         ctx.fillStyle =
             textColor.value;
@@ -2635,47 +2834,21 @@ function saveImage(
 
 
     /* =================================
-       별 / 하트 저장
+       모든 이모지 저장
     ================================= */
 
-    const normalIcons =
+    const icons =
         document.querySelectorAll(
             ".added-icon"
         );
 
 
-    normalIcons.forEach(
+    icons.forEach(
         function(icon) {
-
-            drawElementImage(
-                ctx,
-                icon,
-                imageRect,
-                scaleX,
-                scaleY
-            );
-
-        }
-    );
-
-
-
-    /* =================================
-       글자 이모지 저장
-    ================================= */
-
-    const textEmojis =
-        document.querySelectorAll(
-            ".text-emoji"
-        );
-
-
-    textEmojis.forEach(
-        function(emoji) {
 
             drawRotatedImage(
                 ctx,
-                emoji,
+                icon,
                 imageRect,
                 scaleX,
                 scaleY
@@ -2731,59 +2904,7 @@ function saveImage(
 
 
 /* =====================================
-   일반 이미지 저장
-===================================== */
-
-function drawElementImage(
-    ctx,
-    element,
-    imageRect,
-    scaleX,
-    scaleY
-) {
-
-    const rect =
-        element.getBoundingClientRect();
-
-
-    const x =
-        (
-            rect.left -
-            imageRect.left
-        ) * scaleX;
-
-
-    const y =
-        (
-            rect.top -
-            imageRect.top
-        ) * scaleY;
-
-
-    const width =
-        rect.width *
-        scaleX;
-
-
-    const height =
-        rect.height *
-        scaleY;
-
-
-    ctx.drawImage(
-        element,
-        x,
-        y,
-        width,
-        height
-    );
-
-}
-
-
-
-/* =====================================
-   회전 이미지 저장
+   회전된 이모지 저장
 ===================================== */
 
 function drawRotatedImage(
@@ -2797,6 +2918,10 @@ function drawRotatedImage(
     const rect =
         element.getBoundingClientRect();
 
+
+    /*
+     * 이미지 중심
+     */
 
     const x =
         (
@@ -2814,6 +2939,10 @@ function drawRotatedImage(
         ) * scaleY;
 
 
+    /*
+     * 크기
+     */
+
     const width =
         rect.width *
         scaleX;
@@ -2823,6 +2952,10 @@ function drawRotatedImage(
         rect.height *
         scaleY;
 
+
+    /*
+     * 회전값
+     */
 
     const angle =
         getRotation(
@@ -2862,7 +2995,7 @@ function drawRotatedImage(
 
 
 /* =====================================
-   PNG
+   PNG 저장
 ===================================== */
 
 document
@@ -2883,7 +3016,7 @@ document
 
 
 /* =====================================
-   JPG
+   JPG 저장
 ===================================== */
 
 document
@@ -2903,6 +3036,7 @@ document
 
 
 </script>
+
 
 </body>
 
