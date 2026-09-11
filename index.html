@@ -3,13 +3,16 @@
 <html lang="ko">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>짤·카드 스튜디오</title>
 
 <style>
+
+/* ================================
+   기본 설정
+================================ */
 
 * {
     box-sizing: border-box;
@@ -18,11 +21,16 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #f2f2f2;
+    background-color: #f2f2f2;
 }
 
+
+/* ================================
+   상단
+================================ */
+
 header {
-    background: white;
+    background-color: white;
     padding: 20px;
     text-align: center;
     border-bottom: 1px solid #ddd;
@@ -30,27 +38,54 @@ header {
 
 header h1 {
     margin: 0;
+    font-size: 28px;
 }
 
 header p {
+    margin: 8px 0 0;
     color: #777;
 }
+
+
+/* ================================
+   전체 영역
+================================ */
 
 .container {
     width: 90%;
     max-width: 1100px;
     margin: 40px auto;
+
     display: flex;
     gap: 30px;
 }
 
+
+/* ================================
+   왼쪽 설정
+================================ */
+
 .control-panel {
     width: 300px;
-    background: white;
+
+    background-color: white;
+
     padding: 25px;
+
     border-radius: 12px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+
+    box-shadow:
+        0 3px 10px rgba(0,0,0,0.08);
 }
+
+.control-panel h2 {
+    margin-top: 0;
+}
+
+
+/* ================================
+   설정
+================================ */
 
 .setting {
     margin-top: 20px;
@@ -58,36 +93,61 @@ header p {
 
 .setting label {
     display: block;
+
     margin-bottom: 7px;
+
     font-weight: bold;
 }
 
 .setting input[type="text"],
 .setting input[type="number"] {
+
     width: 100%;
+
     padding: 9px;
+
     border: 1px solid #ccc;
+
     border-radius: 6px;
+
+    font-size: 15px;
 }
 
 .setting input[type="color"] {
+
     width: 100%;
+
     height: 40px;
 }
 
-.setting input[type="range"] {
-    width: 100%;
-}
+
+/* ================================
+   이미지 업로드
+================================ */
 
 .upload-button {
+
     display: block;
+
     width: 100%;
+
     padding: 15px;
-    background: #333;
+
+    background-color: #333;
+
     color: white;
+
     text-align: center;
+
     border-radius: 8px;
+
     cursor: pointer;
+
+    font-size: 16px;
+}
+
+.upload-button:hover {
+    background-color: #555;
 }
 
 #imageInput {
@@ -95,75 +155,145 @@ header p {
 }
 
 .help-text {
-    margin-top: 10px;
+
+    margin-top: 12px;
+
     font-size: 13px;
+
     color: #777;
+
+    line-height: 1.5;
 }
+
+
+/* ================================
+   오류
+================================ */
 
 #errorMessage {
+
+    margin-top: 15px;
+
+    color: #d00000;
+
+    font-size: 14px;
+
     display: none;
-    margin-top: 10px;
-    color: red;
 }
 
-.icon-toggle,
-.save-button {
+
+/* ================================
+   슬라이더
+================================ */
+
+#rotation,
+#outlineWidth {
+
     width: 100%;
+}
+
+
+/* ================================
+   별 / 하트 버튼
+================================ */
+
+.icon-toggle {
+
+    width: 100%;
+
     padding: 11px;
+
     border: none;
+
     border-radius: 7px;
-    background: #333;
+
+    background-color: #333;
+
     color: white;
+
     cursor: pointer;
+
     font-size: 15px;
 }
 
-.icon-toggle:hover,
-.save-button:hover {
-    background: #555;
+.icon-toggle:hover {
+    background-color: #555;
 }
 
+
+/* ================================
+   아이콘 선택창
+================================ */
+
 .icon-panel {
+
     display: none;
+
     margin-top: 10px;
+
     padding: 10px;
-    background: #f5f5f5;
+
+    background-color: #f5f5f5;
+
     border-radius: 8px;
 }
 
 .icon-list {
+
     display: flex;
+
     justify-content: center;
+
+    align-items: center;
+
     gap: 5px;
+
     flex-wrap: wrap;
 }
 
 .icon-button {
+
     width: 48px;
+
     height: 48px;
+
     padding: 3px;
+
     border: 1px solid #ddd;
-    background: white;
+
+    background-color: white;
+
     border-radius: 6px;
+
     cursor: pointer;
 }
 
+.icon-button:hover {
+    border-color: #333;
+}
+
 .icon-button img {
+
     width: 100%;
+
     height: 100%;
+
     object-fit: contain;
+
     pointer-events: none;
 }
 
 
-/* =================================
-   추가된 이모지
-================================= */
+/* ================================
+   추가된 아이콘
+================================ */
 
 .added-icon {
+
     position: absolute;
 
     width: 70px;
+
     height: 70px;
 
     object-fit: contain;
@@ -175,83 +305,68 @@ header p {
     touch-action: none;
 
     z-index: 20;
-
-    transform-origin: center center;
 }
 
 
-/* 선택된 이모지 */
+/* ================================
+   저장 버튼
+================================ */
 
-.added-icon.selected {
-    outline: 2px dashed #333;
-    outline-offset: 3px;
-}
+.save-button {
 
-
-/* =================================
-   이모지 편집창
-================================= */
-
-#iconControlBox {
-    display: none;
-
-    margin-top: 15px;
-
-    padding: 15px;
-
-    background: #f7f7f7;
-
-    border: 1px solid #ddd;
-
-    border-radius: 8px;
-}
-
-.icon-value {
-    font-weight: bold;
-}
-
-.delete-icon-button {
     width: 100%;
 
-    margin-top: 12px;
+    margin-top: 10px;
 
-    padding: 10px;
+    padding: 11px;
 
     border: none;
 
-    border-radius: 6px;
+    border-radius: 7px;
 
-    background: #d33;
+    background-color: #333;
 
     color: white;
 
     cursor: pointer;
 }
 
-.delete-icon-button:hover {
-    background: #b22;
+.save-button:hover {
+    background-color: #555;
 }
 
 
-/* =================================
+/* ================================
    미리보기
-================================= */
+================================ */
 
 .preview-area {
+
     flex: 1;
 
-    background: white;
+    background-color: white;
 
     padding: 25px;
 
     border-radius: 12px;
 
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    box-shadow:
+        0 3px 10px rgba(0,0,0,0.08);
 
     text-align: center;
 }
 
+.preview-area h2 {
+    margin-top: 0;
+}
+
+
+/* ================================
+   편집 영역
+================================ */
+
 #editor {
+
     position: relative;
 
     display: inline-block;
@@ -261,8 +376,15 @@ header p {
     margin-top: 20px;
 }
 
+
+/* ================================
+   이미지
+================================ */
+
 #imagePreview {
+
     max-width: 100%;
+
     max-height: 600px;
 
     display: none;
@@ -272,7 +394,13 @@ header p {
     border-radius: 8px;
 }
 
+
+/* ================================
+   이미지가 없을 때
+================================ */
+
 #emptyMessage {
+
     height: 400px;
 
     display: flex;
@@ -291,15 +419,21 @@ header p {
 }
 
 
-/* =================================
+/* ================================
    텍스트
-================================= */
+================================ */
 
 #textPreview {
+
     position: absolute;
 
     left: 50%;
+
     top: 50%;
+
+    transform:
+        translate(-50%, -50%)
+        rotate(0deg);
 
     color: white;
 
@@ -315,76 +449,36 @@ header p {
 
     z-index: 10;
 
-    transform:
-        translate(-50%, -50%)
-        rotate(0deg);
+    /*
+       윤곽선은 JavaScript에서
+       -webkit-text-stroke로 적용
+    */
+
 }
 
 
-/* =================================
+/* ================================
    모바일
-================================= */
+================================ */
 
 @media (max-width: 700px) {
 
     .container {
+
         flex-direction: column;
     }
 
     .control-panel {
+
+        width: 100%;
+    }
+
+    .preview-area {
+
         width: 100%;
     }
 
 }
-```css
-/* =====================================
-   미리보기 스크롤 따라가기
-===================================== */
-
-.preview-area {
-    position: sticky;
-    top: 20px;
-
-    align-self: flex-start;
-
-    max-height: calc(100vh - 40px);
-
-    overflow-y: auto;
-}
-
-
-/* 미리보기 안쪽 스크롤바 */
-
-.preview-area::-webkit-scrollbar {
-    width: 8px;
-}
-
-.preview-area::-webkit-scrollbar-thumb {
-    background: #bbb;
-    border-radius: 4px;
-}
-
-.preview-area::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-
-/* =====================================
-   모바일에서는 기존 방식으로
-===================================== */
-
-@media (max-width: 700px) {
-
-    .preview-area {
-        position: static;
-
-        max-height: none;
-
-        overflow: visible;
-    }
-
-}
-```
 
 </style>
 
@@ -409,24 +503,22 @@ header p {
 <div class="container">
 
 
-<!-- =================================
+<!-- =====================================
      왼쪽 설정
-================================= -->
+===================================== -->
 
 <div class="control-panel">
 
     <h2>설정</h2>
 
 
-    <!-- 이미지 업로드 -->
+    <!-- 이미지 선택 -->
 
     <label
         for="imageInput"
         class="upload-button"
     >
-
         이미지 선택
-
     </label>
 
 
@@ -449,11 +541,13 @@ header p {
 
 
 
-    <!-- 텍스트 -->
+    <!-- =================================
+         텍스트
+    ================================== -->
 
     <div class="setting">
 
-        <label>
+        <label for="textInput">
             텍스트
         </label>
 
@@ -467,11 +561,13 @@ header p {
 
 
 
-    <!-- 글자 크기 -->
+    <!-- =================================
+         글자 크기
+    ================================== -->
 
     <div class="setting">
 
-        <label>
+        <label for="fontSize">
             글자 크기
         </label>
 
@@ -487,11 +583,13 @@ header p {
 
 
 
-    <!-- 글자 색 -->
+    <!-- =================================
+         글자 색
+    ================================== -->
 
     <div class="setting">
 
-        <label>
+        <label for="textColor">
             글자 색
         </label>
 
@@ -505,11 +603,61 @@ header p {
 
 
 
-    <!-- 글자 회전 -->
+    <!-- =================================
+         ⭐ 글자 윤곽선
+    ================================== -->
 
     <div class="setting">
 
-        <label>
+        <label for="outlineColor">
+            글자 윤곽선 색
+        </label>
+
+        <input
+            type="color"
+            id="outlineColor"
+            value="#000000"
+        >
+
+    </div>
+
+
+
+    <!-- =================================
+         윤곽선 굵기
+    ================================== -->
+
+    <div class="setting">
+
+        <label for="outlineWidth">
+
+            윤곽선 굵기
+
+            <span id="outlineWidthValue">
+                3px
+            </span>
+
+        </label>
+
+        <input
+            type="range"
+            id="outlineWidth"
+            min="0"
+            max="20"
+            value="3"
+        >
+
+    </div>
+
+
+
+    <!-- =================================
+         글자 회전
+    ================================== -->
+
+    <div class="setting">
+
+        <label for="rotation">
 
             글자 회전
 
@@ -538,62 +686,79 @@ header p {
     <div class="setting">
 
         <button
-            class="icon-toggle"
+            type="button"
             id="starToggle"
+            class="icon-toggle"
         >
-
-            ⭐ 별 이모지 추가
-
+            ⭐ 별 추가
         </button>
 
 
         <div
-            class="icon-panel"
             id="starPanel"
+            class="icon-panel"
         >
 
             <div class="icon-list">
 
-
                 <button
+                    type="button"
                     class="icon-button"
                     data-icon="노란별.png"
                 >
-                    <img src="노란별.png">
+                    <img
+                        src="노란별.png"
+                        alt="노란별"
+                    >
                 </button>
 
 
                 <button
+                    type="button"
                     class="icon-button"
                     data-icon="파란별.png"
                 >
-                    <img src="파란별.png">
+                    <img
+                        src="파란별.png"
+                        alt="파란별"
+                    >
                 </button>
 
 
                 <button
+                    type="button"
                     class="icon-button"
                     data-icon="보라별.png"
                 >
-                    <img src="보라별.png">
+                    <img
+                        src="보라별.png"
+                        alt="보라별"
+                    >
                 </button>
 
 
                 <button
+                    type="button"
                     class="icon-button"
                     data-icon="초록별.png"
                 >
-                    <img src="초록별.png">
+                    <img
+                        src="초록별.png"
+                        alt="초록별"
+                    >
                 </button>
 
 
                 <button
+                    type="button"
                     class="icon-button"
                     data-icon="핑크별.png"
                 >
-                    <img src="핑크별.png">
+                    <img
+                        src="핑크별.png"
+                        alt="핑크별"
+                    >
                 </button>
-
 
             </div>
 
@@ -610,62 +775,79 @@ header p {
     <div class="setting">
 
         <button
-            class="icon-toggle"
+            type="button"
             id="heartToggle"
+            class="icon-toggle"
         >
-
-            ❤️ 하트 이모지 추가
-
+            ❤️ 하트 추가
         </button>
 
 
         <div
-            class="icon-panel"
             id="heartPanel"
+            class="icon-panel"
         >
 
             <div class="icon-list">
 
-
                 <button
+                    type="button"
                     class="icon-button"
                     data-heart="노란하트.png"
                 >
-                    <img src="노란하트.png">
+                    <img
+                        src="노란하트.png"
+                        alt="노란하트"
+                    >
                 </button>
 
 
                 <button
+                    type="button"
                     class="icon-button"
                     data-heart="보라하트.png"
                 >
-                    <img src="보라하트.png">
+                    <img
+                        src="보라하트.png"
+                        alt="보라하트"
+                    >
                 </button>
 
 
                 <button
+                    type="button"
                     class="icon-button"
                     data-heart="파란하트.png"
                 >
-                    <img src="파란하트.png">
+                    <img
+                        src="파란하트.png"
+                        alt="파란하트"
+                    >
                 </button>
 
 
                 <button
+                    type="button"
                     class="icon-button"
                     data-heart="핑크하트.png"
                 >
-                    <img src="핑크하트.png">
+                    <img
+                        src="핑크하트.png"
+                        alt="핑크하트"
+                    >
                 </button>
 
 
                 <button
+                    type="button"
                     class="icon-button"
                     data-heart="초록하트.png"
                 >
-                    <img src="초록하트.png">
+                    <img
+                        src="초록하트.png"
+                        alt="초록하트"
+                    >
                 </button>
-
 
             </div>
 
@@ -676,181 +858,26 @@ header p {
 
 
     <!-- =================================
-         글자 사진
+         저장
     ================================== -->
 
     <div class="setting">
 
         <button
-            class="icon-toggle"
-            id="wordToggle"
-        >
-
-            📝 글자 사진 이모지 추가
-
-        </button>
-
-
-        <div
-            class="icon-panel"
-            id="wordPanel"
-        >
-
-            <div class="icon-list">
-
-
-                <button
-                    class="icon-button"
-                    data-word="굿.png"
-                >
-                    <img src="굿.png">
-                </button>
-
-
-                <button
-                    class="icon-button"
-                    data-word="신.png"
-                >
-                    <img src="신.png">
-                </button>
-
-
-                <button
-                    class="icon-button"
-                    data-word="천재.png"
-                >
-                    <img src="천재.png">
-                </button>
-
-
-                <button
-                    class="icon-button"
-                    data-word="최고.png"
-                >
-                    <img src="최고.png">
-                </button>
-
-
-                <button
-                    class="icon-button"
-                    data-word="최애.png"
-                >
-                    <img src="최애.png">
-                </button>
-
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =================================
-         이모지 편집
-    ================================== -->
-
-    <div
-        id="iconControlBox"
-    >
-
-
-        <!-- 크기 -->
-
-        <label>
-
-            이모지 크기
-
-            <span
-                class="icon-value"
-                id="iconSizeValue"
-            >
-                70px
-            </span>
-
-        </label>
-
-
-        <input
-            type="range"
-            id="iconSize"
-            min="20"
-            max="300"
-            value="70"
-        >
-
-
-
-        <!-- 회전 -->
-
-        <div
-            style="margin-top:15px;"
-        >
-
-            <label>
-
-                이모지 회전
-
-                <span
-                    class="icon-value"
-                    id="iconRotationValue"
-                >
-                    0°
-                </span>
-
-            </label>
-
-
-            <input
-                type="range"
-                id="iconRotation"
-                min="-180"
-                max="180"
-                value="0"
-            >
-
-        </div>
-
-
-
-        <!-- 삭제 -->
-
-        <button
-            class="delete-icon-button"
-            id="deleteIconButton"
-        >
-
-            🗑 선택한 이모지 삭제
-
-        </button>
-
-
-    </div>
-
-
-
-    <!-- 저장 -->
-
-    <div class="setting">
-
-        <button
+            type="button"
             class="save-button"
             id="savePNG"
         >
-
             PNG로 저장
-
         </button>
 
 
         <button
+            type="button"
             class="save-button"
             id="saveJPG"
         >
-
             JPG로 저장
-
         </button>
 
     </div>
@@ -860,9 +887,9 @@ header p {
 
 
 
-<!-- =================================
-     미리보기
-================================= -->
+<!-- =====================================
+     오른쪽 미리보기
+===================================== -->
 
 <div class="preview-area">
 
@@ -882,7 +909,7 @@ header p {
 
         <img
             id="imagePreview"
-            alt="업로드 이미지"
+            alt="업로드된 이미지"
         >
 
 
@@ -925,6 +952,15 @@ const fontSize =
 const textColor =
     document.getElementById("textColor");
 
+const outlineColor =
+    document.getElementById("outlineColor");
+
+const outlineWidth =
+    document.getElementById("outlineWidth");
+
+const outlineWidthValue =
+    document.getElementById("outlineWidthValue");
+
 const rotation =
     document.getElementById("rotation");
 
@@ -940,14 +976,6 @@ const editor =
 
 
 /* ==========================================
-   현재 선택한 이모지
-========================================== */
-
-let selectedIcon = null;
-
-
-
-/* ==========================================
    이미지 업로드
 ========================================== */
 
@@ -955,11 +983,13 @@ imageInput.addEventListener(
     "change",
     function () {
 
-        errorMessage.style.display =
-            "none";
+        errorMessage.style.display = "none";
+
+        errorMessage.textContent = "";
 
         const file =
             imageInput.files[0];
+
 
         if (!file) {
             return;
@@ -977,16 +1007,23 @@ imageInput.addEventListener(
             errorMessage.style.display =
                 "block";
 
+            imagePreview.style.display =
+                "none";
+
+            emptyMessage.style.display =
+                "flex";
+
             imageInput.value = "";
 
             return;
         }
 
 
-        if (
-            file.size >
-            10 * 1024 * 1024
-        ) {
+        const maxSize =
+            10 * 1024 * 1024;
+
+
+        if (file.size > maxSize) {
 
             errorMessage.textContent =
                 "파일 크기는 10MB 이하만 가능합니다.";
@@ -994,18 +1031,24 @@ imageInput.addEventListener(
             errorMessage.style.display =
                 "block";
 
+            imagePreview.style.display =
+                "none";
+
+            emptyMessage.style.display =
+                "flex";
+
             imageInput.value = "";
 
             return;
         }
 
 
-        const url =
+        const imageURL =
             URL.createObjectURL(file);
 
 
         imagePreview.src =
-            url;
+            imageURL;
 
 
         imagePreview.onload =
@@ -1017,7 +1060,9 @@ imageInput.addEventListener(
                 emptyMessage.style.display =
                     "none";
 
-                URL.revokeObjectURL(url);
+                URL.revokeObjectURL(
+                    imageURL
+                );
 
             };
 
@@ -1042,6 +1087,10 @@ textInput.addEventListener(
 
 
 
+/* ==========================================
+   글자 크기
+========================================== */
+
 fontSize.addEventListener(
     "input",
     function () {
@@ -1053,6 +1102,10 @@ fontSize.addEventListener(
 );
 
 
+
+/* ==========================================
+   글자 색
+========================================== */
 
 textColor.addEventListener(
     "input",
@@ -1066,17 +1119,65 @@ textColor.addEventListener(
 
 
 
+/* ==========================================
+   윤곽선 색
+========================================== */
+
+outlineColor.addEventListener(
+    "input",
+    function () {
+
+        textPreview.style.webkitTextStrokeColor =
+            outlineColor.value;
+
+    }
+);
+
+
+
+/* ==========================================
+   윤곽선 굵기
+========================================== */
+
+outlineWidth.addEventListener(
+    "input",
+    function () {
+
+        const value =
+            outlineWidth.value;
+
+
+        outlineWidthValue.textContent =
+            value + "px";
+
+
+        textPreview.style.webkitTextStrokeWidth =
+            value + "px";
+
+    }
+);
+
+
+
+/* ==========================================
+   글자 회전
+========================================== */
+
 rotation.addEventListener(
     "input",
     function () {
 
+        const value =
+            rotation.value;
+
+
         rotationValue.textContent =
-            rotation.value + "°";
+            value + "°";
 
 
         textPreview.style.transform =
             "translate(-50%, -50%) rotate(" +
-            rotation.value +
+            value +
             "deg)";
 
     }
@@ -1085,83 +1186,76 @@ rotation.addEventListener(
 
 
 /* ==========================================
-   선택창 열기
+   별 선택창
 ========================================== */
 
-function togglePanel(panel) {
+const starToggle =
+    document.getElementById("starToggle");
 
-    if (
-        panel.style.display === "block"
-    ) {
-
-        panel.style.display =
-            "none";
-
-    } else {
-
-        panel.style.display =
-            "block";
-
-    }
-
-}
+const starPanel =
+    document.getElementById("starPanel");
 
 
-
-document.getElementById(
-    "starToggle"
-).addEventListener(
+starToggle.addEventListener(
     "click",
     function () {
 
-        togglePanel(
-            document.getElementById(
-                "starPanel"
-            )
-        );
+        if (
+            starPanel.style.display === "block"
+        ) {
+
+            starPanel.style.display =
+                "none";
+
+        } else {
+
+            starPanel.style.display =
+                "block";
+
+        }
 
     }
 );
 
 
 
-document.getElementById(
-    "heartToggle"
-).addEventListener(
+/* ==========================================
+   하트 선택창
+========================================== */
+
+const heartToggle =
+    document.getElementById("heartToggle");
+
+const heartPanel =
+    document.getElementById("heartPanel");
+
+
+heartToggle.addEventListener(
     "click",
     function () {
 
-        togglePanel(
-            document.getElementById(
-                "heartPanel"
-            )
-        );
+        if (
+            heartPanel.style.display === "block"
+        ) {
+
+            heartPanel.style.display =
+                "none";
+
+        } else {
+
+            heartPanel.style.display =
+                "block";
+
+        }
 
     }
 );
 
 
 
-document.getElementById(
-    "wordToggle"
-).addEventListener(
-    "click",
-    function () {
-
-        togglePanel(
-            document.getElementById(
-                "wordPanel"
-            )
-        );
-
-    }
-);
-
-
-
-/* =================================================
-   검정색 외곽 제거
-================================================= */
+/* ==========================================
+   검정색 배경 제거
+========================================== */
 
 function removeBlackBackground(image) {
 
@@ -1172,12 +1266,9 @@ function removeBlackBackground(image) {
                 document.createElement("canvas");
 
             const ctx =
-                canvas.getContext(
-                    "2d",
-                    {
-                        willReadFrequently: true
-                    }
-                );
+                canvas.getContext("2d", {
+                    willReadFrequently: true
+                });
 
 
             canvas.width =
@@ -1194,13 +1285,24 @@ function removeBlackBackground(image) {
             );
 
 
-            const imageData =
-                ctx.getImageData(
-                    0,
-                    0,
-                    canvas.width,
-                    canvas.height
-                );
+            let imageData;
+
+            try {
+
+                imageData =
+                    ctx.getImageData(
+                        0,
+                        0,
+                        canvas.width,
+                        canvas.height
+                    );
+
+            } catch(error) {
+
+                reject(error);
+
+                return;
+            }
 
 
             const data =
@@ -1216,9 +1318,7 @@ function removeBlackBackground(image) {
             function isBlack(x, y) {
 
                 const index =
-                    (
-                        y * width + x
-                    ) * 4;
+                    (y * width + x) * 4;
 
 
                 const r =
@@ -1252,7 +1352,6 @@ function removeBlackBackground(image) {
                 new Uint8Array(
                     width * height
                 );
-
 
             const queue = [];
 
@@ -1289,9 +1388,7 @@ function removeBlackBackground(image) {
 
                 visited[position] = 1;
 
-                queue.push(
-                    [x, y]
-                );
+                queue.push([x, y]);
 
             }
 
@@ -1328,15 +1425,19 @@ function removeBlackBackground(image) {
             }
 
 
-            let index = 0;
+            let queueIndex = 0;
 
 
             while (
-                index < queue.length
+                queueIndex <
+                queue.length
             ) {
 
                 const point =
-                    queue[index++];
+                    queue[
+                        queueIndex++
+                    ];
+
 
                 const x =
                     point[0];
@@ -1346,9 +1447,7 @@ function removeBlackBackground(image) {
 
 
                 const pixelIndex =
-                    (
-                        y * width + x
-                    ) * 4;
+                    (y * width + x) * 4;
 
 
                 data[
@@ -1422,9 +1521,9 @@ function removeBlackBackground(image) {
 
 
 
-/* =================================================
-   이모지 추가
-================================================= */
+/* ==========================================
+   아이콘 추가
+========================================== */
 
 async function addIcon(fileName) {
 
@@ -1444,9 +1543,7 @@ async function addIcon(fileName) {
 
 
                 const icon =
-                    document.createElement(
-                        "img"
-                    );
+                    document.createElement("img");
 
 
                 icon.src =
@@ -1457,20 +1554,9 @@ async function addIcon(fileName) {
                     "added-icon";
 
 
-                icon.style.width =
-                    "70px";
+                icon.alt =
+                    "추가된 아이콘";
 
-                icon.style.height =
-                    "70px";
-
-
-                icon.dataset.rotation =
-                    "0";
-
-
-                /*
-                 * 처음에는 중앙에 배치
-                 */
 
                 icon.style.left =
                     (
@@ -1491,30 +1577,17 @@ async function addIcon(fileName) {
                 );
 
 
-                /*
-                 * 드래그 기능
-                 */
-
                 makeIconDraggable(
                     icon
                 );
 
-
-                /*
-                 * 새로 추가한 이모지를
-                 * 바로 선택
-                 */
-
-                selectIcon(
-                    icon
-                );
 
             } catch(error) {
 
                 console.error(error);
 
                 alert(
-                    "이모지를 처리하는 중 오류가 발생했습니다."
+                    "아이콘을 처리하는 중 오류가 발생했습니다."
                 );
 
             }
@@ -1527,7 +1600,8 @@ async function addIcon(fileName) {
 
             alert(
                 fileName +
-                " 파일을 찾을 수 없습니다."
+                " 파일을 찾을 수 없습니다.\n\n" +
+                "index.html과 같은 폴더에 파일이 있는지 확인해주세요."
             );
 
         };
@@ -1542,271 +1616,17 @@ async function addIcon(fileName) {
 
 
 
-/* =================================================
-   이모지 선택
-================================================= */
+/* ==========================================
+   별 버튼
+========================================== */
 
-function selectIcon(icon) {
-
-    /*
-     * 기존 선택 제거
-     */
-
-    if (selectedIcon) {
-
-        selectedIcon.classList.remove(
-            "selected"
-        );
-
-    }
-
-
-    /*
-     * 새 선택
-     */
-
-    selectedIcon =
-        icon;
-
-
-    selectedIcon.classList.add(
-        "selected"
+const starButtons =
+    document.querySelectorAll(
+        "[data-icon]"
     );
 
 
-    /*
-     * 현재 크기 표시
-     */
-
-    const size =
-        parseInt(
-            icon.style.width
-        ) || 70;
-
-
-    document.getElementById(
-        "iconSize"
-    ).value =
-        size;
-
-
-    document.getElementById(
-        "iconSizeValue"
-    ).textContent =
-        size + "px";
-
-
-    /*
-     * 현재 회전값 표시
-     */
-
-    const angle =
-        Number(
-            icon.dataset.rotation
-        ) || 0;
-
-
-    document.getElementById(
-        "iconRotation"
-    ).value =
-        angle;
-
-
-    document.getElementById(
-        "iconRotationValue"
-    ).textContent =
-        angle + "°";
-
-
-    /*
-     * 편집창 표시
-     */
-
-    document.getElementById(
-        "iconControlBox"
-    ).style.display =
-        "block";
-
-}
-
-
-
-/* =================================================
-   이모지 클릭 → 선택
-================================================= */
-
-document.addEventListener(
-    "click",
-    function(event) {
-
-        if (
-            event.target.classList.contains(
-                "added-icon"
-            )
-        ) {
-
-            selectIcon(
-                event.target
-            );
-
-        }
-
-    }
-);
-
-
-
-/* =================================================
-   이모지 크기 조절
-================================================= */
-
-document.getElementById(
-    "iconSize"
-).addEventListener(
-    "input",
-    function() {
-
-        if (!selectedIcon) {
-            return;
-        }
-
-
-        const size =
-            Number(this.value);
-
-
-        selectedIcon.style.width =
-            size + "px";
-
-
-        selectedIcon.style.height =
-            size + "px";
-
-
-        document.getElementById(
-            "iconSizeValue"
-        ).textContent =
-            size + "px";
-
-    }
-);
-
-
-
-/* =================================================
-   이모지 회전
-================================================= */
-
-document.getElementById(
-    "iconRotation"
-).addEventListener(
-    "input",
-    function() {
-
-        if (!selectedIcon) {
-            return;
-        }
-
-
-        const angle =
-            Number(this.value);
-
-
-        selectedIcon.dataset.rotation =
-            angle;
-
-
-        selectedIcon.style.transform =
-            "rotate(" +
-            angle +
-            "deg)";
-
-
-        document.getElementById(
-            "iconRotationValue"
-        ).textContent =
-            angle + "°";
-
-    }
-);
-
-
-
-/* =================================================
-   이모지 삭제
-================================================= */
-
-document.getElementById(
-    "deleteIconButton"
-).addEventListener(
-    "click",
-    function() {
-
-        if (!selectedIcon) {
-
-            alert(
-                "먼저 이모지를 선택해주세요."
-            );
-
-            return;
-
-        }
-
-
-        selectedIcon.remove();
-
-
-        selectedIcon =
-            null;
-
-
-        document.getElementById(
-            "iconControlBox"
-        ).style.display =
-            "none";
-
-    }
-);
-
-
-
-/* =================================================
-   Delete 키 삭제
-================================================= */
-
-document.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (
-            event.key === "Delete" &&
-            selectedIcon
-        ) {
-
-            selectedIcon.remove();
-
-            selectedIcon =
-                null;
-
-            document.getElementById(
-                "iconControlBox"
-            ).style.display =
-                "none";
-
-        }
-
-    }
-);
-
-
-
-/* =================================================
-   별 버튼
-================================================= */
-
-document.querySelectorAll(
-    "[data-icon]"
-).forEach(
+starButtons.forEach(
     function(button) {
 
         button.addEventListener(
@@ -1825,13 +1645,17 @@ document.querySelectorAll(
 
 
 
-/* =================================================
+/* ==========================================
    하트 버튼
-================================================= */
+========================================== */
 
-document.querySelectorAll(
-    "[data-heart]"
-).forEach(
+const heartButtons =
+    document.querySelectorAll(
+        "[data-heart]"
+    );
+
+
+heartButtons.forEach(
     function(button) {
 
         button.addEventListener(
@@ -1850,62 +1674,24 @@ document.querySelectorAll(
 
 
 
-/* =================================================
-   글자 사진 버튼
-================================================= */
-
-document.querySelectorAll(
-    "[data-word]"
-).forEach(
-    function(button) {
-
-        button.addEventListener(
-            "click",
-            function() {
-
-                addIcon(
-                    button.dataset.word
-                );
-
-            }
-        );
-
-    }
-);
-
-
-
-/* =================================================
-   이모지 위치 이동
-================================================= */
+/* ==========================================
+   아이콘 드래그
+========================================== */
 
 function makeIconDraggable(icon) {
 
-    let dragging =
-        false;
+    let dragging = false;
 
-    let offsetX =
-        0;
+    let offsetX = 0;
 
-    let offsetY =
-        0;
+    let offsetY = 0;
 
 
     icon.addEventListener(
         "mousedown",
         function(event) {
 
-            /*
-             * 클릭한 이모지를 선택
-             */
-
-            selectIcon(
-                icon
-            );
-
-
-            dragging =
-                true;
+            dragging = true;
 
 
             const rect =
@@ -1953,11 +1739,6 @@ function makeIconDraggable(icon) {
                 offsetY;
 
 
-            /*
-             * 편집 영역 밖으로
-             * 나가지 않도록 제한
-             */
-
             x =
                 Math.max(
                     0,
@@ -1995,8 +1776,7 @@ function makeIconDraggable(icon) {
         "mouseup",
         function() {
 
-            dragging =
-                false;
+            dragging = false;
 
         }
     );
@@ -2005,26 +1785,22 @@ function makeIconDraggable(icon) {
 
 
 
-/* =================================================
+/* ==========================================
    텍스트 드래그
-================================================= */
+========================================== */
 
-let textDragging =
-    false;
+let textDragging = false;
 
-let textOffsetX =
-    0;
+let textOffsetX = 0;
 
-let textOffsetY =
-    0;
+let textOffsetY = 0;
 
 
 textPreview.addEventListener(
     "mousedown",
     function(event) {
 
-        textDragging =
-            true;
+        textDragging = true;
 
 
         const rect =
@@ -2093,17 +1869,16 @@ document.addEventListener(
     "mouseup",
     function() {
 
-        textDragging =
-            false;
+        textDragging = false;
 
     }
 );
 
 
 
-/* =================================================
+/* ==========================================
    이미지 저장
-================================================= */
+========================================== */
 
 function saveImage(type) {
 
@@ -2117,20 +1892,15 @@ function saveImage(type) {
         );
 
         return;
-
     }
 
 
     const canvas =
-        document.createElement(
-            "canvas"
-        );
+        document.createElement("canvas");
 
 
     const ctx =
-        canvas.getContext(
-            "2d"
-        );
+        canvas.getContext("2d");
 
 
     canvas.width =
@@ -2141,9 +1911,9 @@ function saveImage(type) {
         imagePreview.naturalHeight;
 
 
-    /*
-     * 원본 이미지
-     */
+    /* ==========================
+       원본 이미지
+    ========================== */
 
     ctx.drawImage(
         imagePreview,
@@ -2154,32 +1924,31 @@ function saveImage(type) {
     );
 
 
-    const imageRect =
-        imagePreview.getBoundingClientRect();
-
-
     const scaleX =
         canvas.width /
-        imageRect.width;
+        imagePreview.clientWidth;
 
 
     const scaleY =
         canvas.height /
-        imageRect.height;
+        imagePreview.clientHeight;
 
 
 
-    /* =================================
+    /* ==========================
        텍스트 저장
-    ================================= */
+    ========================== */
 
     if (
-        textPreview.textContent.trim()
-        !== ""
+        textPreview.textContent.trim() !== ""
     ) {
 
         const textRect =
             textPreview.getBoundingClientRect();
+
+
+        const imageRect =
+            imagePreview.getBoundingClientRect();
 
 
         const x =
@@ -2207,11 +1976,19 @@ function saveImage(type) {
         ctx.save();
 
 
+        /* ==========================
+           글자 위치
+        ========================== */
+
         ctx.translate(
             x,
             y
         );
 
+
+        /* ==========================
+           회전
+        ========================== */
 
         ctx.rotate(
             Number(
@@ -2222,14 +1999,14 @@ function saveImage(type) {
         );
 
 
+        /* ==========================
+           글꼴
+        ========================== */
+
         ctx.font =
             "bold " +
             size +
             "px Arial";
-
-
-        ctx.fillStyle =
-            textColor.value;
 
 
         ctx.textAlign =
@@ -2239,6 +2016,47 @@ function saveImage(type) {
         ctx.textBaseline =
             "middle";
 
+
+        /* ==========================
+           윤곽선 굵기
+        ========================== */
+
+        ctx.lineWidth =
+            Number(
+                outlineWidth.value
+            ) * scaleX;
+
+
+        /* ==========================
+           윤곽선 색
+        ========================== */
+
+        ctx.strokeStyle =
+            outlineColor.value;
+
+
+        /* ==========================
+           윤곽선 그리기
+        ========================== */
+
+        ctx.strokeText(
+            textPreview.textContent,
+            0,
+            0
+        );
+
+
+        /* ==========================
+           글자 색
+        ========================== */
+
+        ctx.fillStyle =
+            textColor.value;
+
+
+        /* ==========================
+           글자 그리기
+        ========================== */
 
         ctx.fillText(
             textPreview.textContent,
@@ -2253,9 +2071,9 @@ function saveImage(type) {
 
 
 
-    /* =================================
-       이모지 저장
-    ================================= */
+    /* ==========================
+       아이콘 저장
+    ========================== */
 
     const icons =
         document.querySelectorAll(
@@ -2270,219 +2088,122 @@ function saveImage(type) {
                 icon.getBoundingClientRect();
 
 
-            /*
-             * 이모지 중심점
-             */
+            const imageRect =
+                imagePreview.getBoundingClientRect();
 
-            const centerX =
+
+            const x =
                 (
-                    iconRect.left +
-                    iconRect.width / 2 -
+                    iconRect.left -
                     imageRect.left
                 ) * scaleX;
 
 
-            const centerY =
+            const y =
                 (
-                    iconRect.top +
-                    iconRect.height / 2 -
+                    iconRect.top -
                     imageRect.top
                 ) * scaleY;
 
 
             const width =
-                icon.offsetWidth *
+                iconRect.width *
                 scaleX;
 
 
             const height =
-                icon.offsetHeight *
+                iconRect.height *
                 scaleY;
-
-
-            const angle =
-                Number(
-                    icon.dataset.rotation
-                ) || 0;
-
-
-            /*
-             * 회전 적용
-             */
-
-            ctx.save();
-
-
-            ctx.translate(
-                centerX,
-                centerY
-            );
-
-
-            ctx.rotate(
-                angle *
-                Math.PI /
-                180
-            );
 
 
             ctx.drawImage(
                 icon,
-                -width / 2,
-                -height / 2,
+                x,
+                y,
                 width,
                 height
             );
-
-
-            ctx.restore();
 
         }
     );
 
 
 
-    /* =================================
-       파일 형식
-    ================================= */
+    /* ==========================
+       저장
+    ========================== */
 
-    let mimeType;
-    let extension;
+    const link =
+        document.createElement("a");
 
 
-    if (
-        type === "png"
-    ) {
+    if (type === "png") {
 
-        mimeType =
-            "image/png";
+        link.download =
+            "짤카드.png";
 
-        extension =
-            "png";
+
+        link.href =
+            canvas.toDataURL(
+                "image/png"
+            );
 
     } else {
 
-        mimeType =
-            "image/jpeg";
+        link.download =
+            "짤카드.jpg";
 
-        extension =
-            "jpg";
+
+        link.href =
+            canvas.toDataURL(
+                "image/jpeg",
+                0.95
+            );
 
     }
 
 
-
-    /* =================================
-       다운로드
-    ================================= */
-
-    canvas.toBlob(
-        function(blob) {
-
-            if (!blob) {
-
-                alert(
-                    "이미지 저장에 실패했습니다."
-                );
-
-                return;
-
-            }
-
-
-            const url =
-                URL.createObjectURL(
-                    blob
-                );
-
-
-            const link =
-                document.createElement(
-                    "a"
-                );
-
-
-            link.href =
-                url;
-
-
-            link.download =
-                "짤카드." +
-                extension;
-
-
-            document.body.appendChild(
-                link
-            );
-
-
-            link.click();
-
-
-            document.body.removeChild(
-                link
-            );
-
-
-            URL.revokeObjectURL(
-                url
-            );
-
-        },
-        mimeType,
-        0.95
-    );
+    link.click();
 
 }
 
 
 
-/* =================================================
-   저장 버튼
-================================================= */
+/* ==========================================
+   PNG 저장
+========================================== */
 
-document.getElementById(
-    "savePNG"
-).addEventListener(
-    "click",
-    function() {
+document
+    .getElementById("savePNG")
+    .addEventListener(
+        "click",
+        function() {
 
-        saveImage(
-            "png"
-        );
+            saveImage("png");
 
-    }
-);
-
-
-document.getElementById(
-    "saveJPG"
-).addEventListener(
-    "click",
-    function() {
-
-        saveImage(
-            "jpg"
-        );
-
-    }
-);
+        }
+    );
 
 
 
-/* =================================================
-   초기값
-================================================= */
+/* ==========================================
+   JPG 저장
+========================================== */
 
-textPreview.style.fontSize =
-    fontSize.value + "px";
+document
+    .getElementById("saveJPG")
+    .addEventListener(
+        "click",
+        function() {
 
+            saveImage("jpg");
 
-textPreview.style.color =
-    textColor.value;
+        }
+    );
 
 
 </script>
+
 
 </body>
 
